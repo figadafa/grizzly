@@ -1,0 +1,140 @@
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px var(--spacing-lg); /* Slightly more compact */
+  background-color: rgba(23, 23, 23, 0.95); /* Solid background for sticky header */
+  backdrop-filter: blur(8px);
+  color: var(--concrete-cream);
+  position: sticky; /* Changed from fixed to sticky */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(119, 115, 110, 0.2); /* Subtle separator */
+}
+
+.headerInner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px; /* Constrain width */
+}
+
+.wordmark .graffitiWordmark {
+  font-family: var(--font-display-urban);
+  font-size: 2.5em;
+  font-weight: normal;
+  text-transform: uppercase;
+  color: var(--hazard-orange);
+  letter-spacing: 2px;
+  display: inline-block;
+  transform: rotate(-3deg);
+  text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+  cursor: pointer;
+}
+
+.menuButton {
+  display: none;
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1001;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.hamburger {
+  display: block;
+  width: 25px;
+  height: 2px;
+  background-color: var(--concrete-cream);
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+.hamburger::before, .hamburger::after {
+  content: '';
+  display: block;
+  width: 25px;
+  height: 2px;
+  background-color: var(--concrete-cream);
+  position: absolute;
+  transition: transform 0.3s ease, top 0.3s ease;
+}
+
+.hamburger::before { top: -6px; }
+.hamburger::after { top: 6px; }
+
+.navigation {
+  display: flex;
+}
+
+.navList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--spacing-lg); /* Wider gap for editorial spacing */
+}
+
+.navList a {
+  text-decoration: none;
+  color: var(--concrete-cream);
+  font-weight: 400;
+  font-size: 0.85em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+  opacity: 0.7;
+}
+
+.navList a:hover {
+  color: var(--hazard-orange);
+  opacity: 1;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .header {
+    padding: 20px var(--spacing-md);
+  }
+
+  .navigation {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background-color: var(--deep-charcoal);
+    padding: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .navigation.open {
+    display: flex;
+  }
+
+  .navList {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+
+  .navList a {
+    font-size: 1.2em;
+    padding: 10px 0;
+  }
+}
+
+@media (prefers-reduced-motion) {
+  .hamburger,
+  .hamburger::before,
+  .hamburger::after,
+  .navList a {
+    transition: none;
+  }
+}

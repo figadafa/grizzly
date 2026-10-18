@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+@font-face {
+  font-family: 'Gagalin-Regular';
+  src: url('../assets/font/Gagalin-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Urban Spray';
+  src: url('../assets/font/URBAN SPRAY.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-display-gagalin: 'Gagalin-Regular', sans-serif;
+  --font-display-urban: 'Urban Spray', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Spacing */
+  --spacing-xs: 5px;
+  --spacing-sm: 10px;
+  --spacing-md: 20px;
+  --spacing-lg: 40px;
+  --spacing-xl: 80px;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--asphalt-black);
+  color: var(--concrete-cream);
+  margin: 0;
+  line-height: 1.6;
+}

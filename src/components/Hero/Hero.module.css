@@ -1,0 +1,276 @@
+.hero {
+  min-height: 100svh;
+  width: 100%;
+  position: relative;
+  background-color: var(--asphalt-black);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: var(--spacing-md);
+  padding-bottom: var(--spacing-lg);
+  background-image: url('/src/assets/images/BackgroundHero.png');
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+}
+
+/* GRAFFITI: grain tipis ala tembok beton */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  z-index: 6;
+  pointer-events: none;
+}
+
+
+
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+  flex-grow: 1;
+  display: flex;
+  align-items: stretch; /* GRAFFITI: supaya portrait bisa menempel ke dasar hero */
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr; 
+  align-items: center;
+  gap: var(--spacing-xl);
+  width: 100%;
+}
+
+.textColumn {
+  padding-bottom: 0;
+}
+
+.metaInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.roleLabel, .roleLabelSecondary {
+  font-family: var(--font-body);
+  font-size: 0.75em;
+  letter-spacing: 0.15em;
+  color: var(--concrete-cream);
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.headline {
+  font-family: var(--font-display-gagalin);
+  font-size: clamp(3rem, 7vw, 7rem);
+  line-height: 0.9;
+  font-weight: normal;
+  text-transform: uppercase;
+  margin: 0 0 var(--spacing-md) 0;
+  max-width: 14ch;
+  z-index: 3;
+  position: relative;
+  display: inline-block; /* Add this to help positioning */
+  transform: rotate(-2deg); /* GRAFFITI: sedikit miring seperti ditulis di tembok */
+  transform-origin: left bottom;
+}
+
+/* Splat: di belakang huruf "GH" pada kata THROUGH */
+.headlineSplatter {
+  position: absolute;
+  top: 70%;
+  left: 59%;
+  width: 1.7em; /* ikut skala font headline */
+  z-index: -1;
+  opacity: 0.7;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(-10deg);
+}
+
+.builtThrough { color: var(--concrete-cream); display: block; position: relative; }
+.friction { display: block; }
+.f { color: var(--concrete-cream); display: inline; }
+.riction { color: var(--hazard-orange); display: inline; position: relative; }
+
+.supportingCopy {
+  font-family: var(--font-body);
+  font-size: 1.1em;
+  color: var(--concrete-cream);
+  margin-bottom: var(--spacing-lg);
+  max-width: 420px;
+  line-height: 1.4;
+  opacity: 0.9;
+  z-index: 3; 
+  position: relative;
+}
+
+.ctaGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md); /* Reduced to bring social links upward */
+  z-index: 3; 
+  position: relative;
+}
+
+.socialLinks {
+  display: flex;
+  gap: var(--spacing-md);
+  font-size: 0.8em;
+  color: var(--steel-gray);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.85;
+  z-index: 3; 
+  position: relative;
+  margin-bottom: var(--spacing-lg); /* Add margin to bottom if needed */
+}
+
+/* Portrait Column */
+.portraitColumn {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  align-self: end; /* menempel ke dasar baris; tinggi kolom tetap mengikuti foto */
+  height: auto;
+  margin-bottom: calc(var(--spacing-lg) * -1); /* foto menempel ke dasar hero, potongan bawahnya tersembunyi */
+  max-width: 100%;
+  z-index: 1;
+}
+
+.portraitWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.portrait {
+  width: 130%; /* Enlarged by ~15% from previous 115% */
+  max-width: none;
+  height: auto;
+  max-height: 95vh;
+  object-fit: contain;
+  filter: drop-shadow(0 0 25px rgba(243, 107, 53, 0.4));
+  transform: translateX(-5%);
+  z-index: 2;
+}
+
+/* GRAFFITI: halo cat oranye di belakang portrait + doodle di sekitarnya.
+   Posisi pakai % dari wrapper; geser left/top kalau mau. */
+.halo,
+.crown,
+.star,
+.arrow,
+.streaks {
+  position: absolute;
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
+}
+
+.halo {
+  height: 125%;
+  width: auto;
+  left: 44%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.crown   { width: 17%; left: 72%;   top: -6%;  z-index: 3; }
+.star    { width: 12%; left: 3%;    top: 22%;  z-index: 3; }
+.arrow   { width: 24%; left: 60%;   top: 32%;  z-index: 3; }
+.streaks { width: 34%; left: -12%;  top: 74%;  z-index: 3; }
+
+/* Decorative Assets */
+.splash4 { position: absolute; bottom: 0%; right: 10%; width: 250px; opacity: 0.7; z-index: 1; pointer-events: none; transform: rotate(-20deg); }
+.splash5 { position: absolute; bottom: 5%; left: 40%; width: 180px; opacity: 0.6; z-index: 1; pointer-events: none; transform: rotate(5deg); }
+.paintDrip {
+  position: absolute;
+  top: 4%;
+  left: 38%;
+  width: 180px;
+  height: auto;
+  opacity: 0.9;
+  z-index: 1;
+  pointer-events: none;
+  transform: rotate(-12deg);
+  filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.5));
+}
+
+/* Scroll Indicator */
+.scrollIndicator {
+  position: absolute;
+  right: var(--spacing-md);
+  bottom: 35%; /* Moved upward from 25% */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--concrete-cream);
+  font-size: 0.7em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  z-index: 5;
+}
+
+.scrollText {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.scrollLine { width: 1px; height: var(--spacing-xl); background: rgba(240, 235, 226, 0.3); }
+
+/* --- Breakpoints --- */
+
+@media (max-width: 1024px) {
+  .hero { padding-top: var(--spacing-md); }
+  .container { padding: 0 var(--spacing-md); }
+  .content {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: var(--spacing-xl);
+  }
+  .textColumn { order: 1; display: flex; flex-direction: column; align-items: center; }
+  .headline { font-size: clamp(2.5rem, 8vw, 4.5rem); max-width: 100%; transform-origin: center; }
+  .supportingCopy { max-width: 100%; }
+  .ctaGroup { justify-content: center; }
+  .socialLinks { justify-content: center; }
+  .portraitColumn { order: 2; height: 50vh; align-items: flex-end; align-self: end; }
+  .portrait { width: 100%; transform: translateX(0); }
+  .paintDrip { display: none; }
+  .scrollIndicator { display: none; }
+  .socialLinks { margin-bottom: 0; }
+
+  /* grafiti: sisakan halo dan splat, sembunyikan doodle yang rawan menabrak teks */
+  .halo { left: 50%; height: 118%; }
+  .crown, .star, .arrow, .streaks { display: none; }
+  .cornerSplat { width: clamp(180px, 45vw, 320px); }
+}
+
+@media (max-width: 768px) {
+  .hero { padding-top: var(--spacing-sm); }
+  .headline { font-size: clamp(2rem, 9vw, 3.5rem); }
+  .supportingCopy { font-size: 1em; }
+  .ctaGroup { flex-direction: column; }
+  .ctaGroup > * { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .hero { padding-top: var(--spacing-sm); }
+  .headline { font-size: clamp(1.8rem, 10vw, 2.5rem); }
+}
