@@ -43,10 +43,10 @@ const Hero = () => {
 
           <div className={styles.portraitColumn}>
             <div className={styles.portraitWrapper}>
-              <img src="/images/graffiti/halo.svg" alt="" aria-hidden="true" className={styles.halo} />
-              <img src="/images/Dapa-Nobackground.png" alt="Portrait of Figa Brilliant Daffa" className={styles.portrait} />
-              <img src="/images/graffiti/crown.svg" alt="" aria-hidden="true" className={styles.crown} />
-              <img src="/images/graffiti/arrow.svg" alt="" aria-hidden="true" className={styles.arrow} />
+              <img src="/images/halo.png" alt="" aria-hidden="true" className={styles.halo} />
+              <img src="/images/Dapa-Nobackground.avif" alt="Portrait of Figa Brilliant Daffa" className={styles.portrait} />
+              <img src="/images/crown.png" alt="" aria-hidden="true" className={styles.crown} />
+              <img src="/images/arrow.png" alt="" aria-hidden="true" className={styles.arrow} />
             </div>
           </div>
         </div>
