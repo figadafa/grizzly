@@ -2,4 +2,24 @@
 @import './typography.css';
 
 * { box-sizing: border-box; }
-body { margin: 0; }
+
+:root {
+  --header-height: 88px; /* samakan dengan tinggi Header yang sebenarnya */
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-height);
+}
+
+body {
+  margin: 0;
+  background-color: var(--asphalt-black);
+  color: var(--concrete-cream);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
