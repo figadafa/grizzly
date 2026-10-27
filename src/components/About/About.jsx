@@ -11,7 +11,7 @@ const STEPS = [
     kicker: 'Where it began',
     title: 'A different kind of curiosity',
     body:
-      "My journey didn't start with code. I was once more drawn to creativity, design, and the process of turning ideas into something tangible. Choosing Informatics at Universitas Muhammadiyah Malang opened a new path\u2014one that challenged me to think differently and explore beyond what I already knew.",
+      "My journey didn't start with code. I was once more drawn to creativity, design, and the process of turning ideas into something tangible. Choosing Informatics at Universitas Muhammadiyah Malang opened a new path,that challenged me to think differently and explore beyond what I already knew.",
     image: 'public/images/about/about-1.jpg',
     alt: 'Figa Daffa at a university event',
     note: 'Every journey starts somewhere.',
@@ -35,7 +35,7 @@ const STEPS = [
     kicker: "What's next",
     title: 'Still curious. Still building.',
     body:
-      "I'm exploring the intersection of technology, data, and artificial intelligence, looking for opportunities to build things that are not only functional but genuinely useful. There's still a lot I want to understand, create, and achieve, but I know the direction\u2014keep challenging myself, expand my perspective, and turn what I learn into something that matters.",
+      "I'm exploring the intersection of technology, data, and artificial intelligence, looking for opportunities to build things that are not only functional but genuinely useful. There's still a lot I want to understand, create, and achieve, but I know the direction and keep challenging myself, expand my perspective, and turn what I learn into something that matters.",
     image: 'public/images/about/about-3.jpg',
     alt: 'Code open on a laptop screen',
     note: 'Same curiosity, different chapters.',
