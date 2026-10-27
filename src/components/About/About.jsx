@@ -132,38 +132,55 @@ const About = () => {
             </p>
 
             <div className={styles.stack}>
+              {/* lapisan dekorasi di belakang foto */}
+              <span className={styles.paper} aria-hidden="true" />
+              <span className={styles.backCard} aria-hidden="true" />
+              <span className={`${styles.dots} ${styles.dotsTop}`} aria-hidden="true" />
+              <span className={`${styles.dots} ${styles.dotsBottom}`} aria-hidden="true" />
+
               {STEPS.map((step, i) => (
                 <figure
                   key={step.id}
                   className={styles.card}
                   data-state={i === active ? 'active' : i < active ? 'past' : 'next'}
+                  aria-hidden={i !== active}
                   style={{ '--tilt': step.tilt }}
                 >
-                  <img
-                    src={step.image}
-                    alt={step.alt}
-                    className={styles.photo}
-                    style={{ objectPosition: step.position }}
-                    loading="lazy"
-                  />
-                  <figcaption className={styles.note}>{step.note}</figcaption>
+                  <div className={styles.frame}>
+                    <img
+                      src={step.image}
+                      alt={step.alt}
+                      className={styles.photo}
+                      style={{ objectPosition: step.position }}
+                      loading="lazy"
+                    />
+                    <span className={styles.note}>
+                      {step.note}
+                      <svg className={styles.noteArrow} viewBox="0 0 48 40" aria-hidden="true">
+                        <g fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M6 36 C 10 22, 20 12, 40 6" />
+                          <path d="M28 4 L41 6 L35 18" />
+                        </g>
+                      </svg>
+                    </span>
+                  </div>
+                  <figcaption className={styles.bar}>
+                    <b>Figa Daffa</b>
+                    <span>Informatics Student</span>
+                  </figcaption>
                 </figure>
               ))}
 
-              <span className={`${styles.tape} ${styles.tapeLeft}`} aria-hidden="true" />
-              <span className={`${styles.tape} ${styles.tapeRight}`} aria-hidden="true" />
-              <svg className={styles.marker} viewBox="0 0 160 120" aria-hidden="true">
-                <g fill="none" stroke="currentColor" strokeLinecap="round">
-                  <path d="M18 104 L92 20" strokeWidth="16" />
-                  <path d="M54 112 L130 30" strokeWidth="10" />
-                  <path d="M100 108 L148 56" strokeWidth="7" />
+              <span className={`${styles.tape} ${styles.tapeTR}`} aria-hidden="true" />
+              <span className={`${styles.tape} ${styles.tapeBL}`} aria-hidden="true" />
+              <svg className={styles.swoosh} viewBox="0 0 200 150" aria-hidden="true">
+                <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14 128 C 64 112, 118 62, 166 14" strokeWidth="20" />
+                  <path d="M34 140 C 84 124, 138 82, 186 44" strokeWidth="11" />
+                  <path d="M126 70 C 146 92, 150 112, 144 138" strokeWidth="12" />
                 </g>
               </svg>
             </div>
-
-            <p className={styles.caption}>
-              Figa Daffa <span>Informatics Student</span>
-            </p>
           </div>
 
           {/* ===== KANAN: judul + langkah 01 / 02 / 03 ===== */}

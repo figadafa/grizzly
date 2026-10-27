@@ -155,24 +155,75 @@
   max-width: 100%;
 }
 
-/* bingkai tipis di belakang foto untuk kedalaman */
-.stack::before {
-  content: '';
+/* --- lapisan di belakang kartu foto --- */
+
+/* secarik kertas kraft di kiri atas */
+.paper {
   position: absolute;
-  inset: 14px -14px -14px 14px;
-  border: 1px solid rgba(240, 235, 226, 0.2);
+  top: 5%;
+  left: -9%;
+  width: 22%;
+  height: 42%;
+  background: linear-gradient(180deg, #a89f8d, #8f8676);
+  transform: rotate(-2.5deg);
+  opacity: 0.92;
+}
+
+/* kartu gelap bergaris oranye yang menyembul di atas dan kanan */
+.backCard {
+  position: absolute;
+  inset: -3% -6% 3% 5%;
+  background: #1b1b1b;
+  border: 1px solid rgba(243, 107, 53, 0.85);
   transform: rotate(2.4deg);
 }
+
+.backCard::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  right: 9%;
+  width: 24%;
+  height: 10px;
+  background: var(--hazard-orange);
+}
+
+/* pola titik halftone */
+.dots {
+  position: absolute;
+  background-image: radial-gradient(circle, rgba(243, 107, 53, 0.9) 1.5px, transparent 2px);
+  background-size: 12px 12px;
+  pointer-events: none;
+}
+
+.dotsTop {
+  top: -10%;
+  right: -2%;
+  width: 22%;
+  height: 11%;
+  opacity: 0.75;
+}
+
+.dotsBottom {
+  bottom: -9%;
+  left: 12%;
+  width: 30%;
+  height: 7%;
+  opacity: 0.6;
+}
+
+/* --- kartu foto --- */
 
 .card {
   position: absolute;
   inset: 0;
   margin: 0;
-  padding: 10px 10px 0;
   display: flex;
   flex-direction: column;
-  background: var(--concrete-cream);
-  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.55);
+  background: #151515;
+  box-shadow:
+    0 28px 60px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(243, 107, 53, 0.6);
   transition:
     transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1),
     opacity 0.55s ease;
@@ -196,77 +247,118 @@
   transform: translate(12%, 12%) rotate(calc(var(--tilt) + 8deg)) scale(0.96);
 }
 
-.photo {
+.frame {
+  position: relative;
   flex: 1;
   min-height: 0;
-  width: 100%;
-  display: block;
-  object-fit: cover;
-  background: #2a2a2a;
+  margin: 9px 9px 0;
+  overflow: hidden;
+  background: #262626;
 }
 
-.note {
-  padding: 0.7rem 0.2rem 0.85rem;
-  font-family: var(--font-body);
-  font-size: 0.82rem;
-  font-style: italic;
-  color: #1c1c1c;
-  letter-spacing: 0.01em;
+/* gradasi tipis di atas foto supaya catatan tulisan tangan selalu terbaca */
+.frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 40%);
+  pointer-events: none;
 }
+
+.photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* catatan tulisan tangan + panah */
+.note {
+  position: absolute;
+  z-index: 2;
+  top: 5%;
+  left: 6%;
+  max-width: 56%;
+  font-family: var(--font-handwritten, 'Caveat', 'Segoe Print', 'Bradley Hand', cursive);
+  font-size: clamp(1.05rem, 2.8svh, 1.5rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--concrete-cream);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  transform: rotate(-8deg);
+  transform-origin: left top;
+}
+
+.noteArrow {
+  display: block;
+  width: 2.2em;
+  margin: 0.3em 0 0 0.3em;
+  color: var(--hazard-orange);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+/* strip nama di bawah foto */
+.bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.85rem 1rem 0.95rem;
+  font-family: var(--font-body);
+  text-transform: uppercase;
+}
+
+.bar b {
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--concrete-cream);
+}
+
+.bar span {
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  color: var(--steel-gray);
+}
+
+/* --- selotip dan coretan cat --- */
 
 .tape {
   position: absolute;
   z-index: 5;
-  width: 24%;
-  height: 7%;
-  background: rgba(14, 14, 14, 0.9);
+  background: rgba(12, 12, 12, 0.92);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
   pointer-events: none;
 }
 
-.tapeLeft {
-  top: 3%;
-  left: -6%;
-  transform: rotate(-38deg);
+.tapeTR {
+  top: 6%;
+  right: 3%;
+  width: 22%;
+  height: 6.5%;
+  transform: rotate(38deg);
 }
 
-.tapeRight {
-  top: 2%;
-  right: -7%;
-  transform: rotate(34deg);
+.tapeBL {
+  bottom: 21%;
+  left: -5%;
+  width: 22%;
+  height: 6%;
+  transform: rotate(-42deg);
 }
 
-.marker {
+.swoosh {
   position: absolute;
   z-index: 6;
-  right: -9%;
-  bottom: 2%;
-  width: 36%;
+  right: -14%;
+  bottom: -4%;
+  width: 48%;
   color: var(--hazard-orange);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
   pointer-events: none;
-}
-
-.caption {
-  align-self: flex-start;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  font-family: var(--font-body);
-  font-size: 0.68rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--concrete-cream);
-}
-
-.caption::before {
-  content: '';
-  width: 1.4rem;
-  height: 2px;
-  background: var(--hazard-orange);
-}
-
-.caption span {
-  color: var(--steel-gray);
 }
 
 /* ---------- kanan: konten ---------- */
@@ -293,22 +385,15 @@
 .accent {
   position: relative;
   display: inline-block;
+  font-family: var(--font-display-urban);
+  font-size: 1.15em;
+  line-height: 1;
   color: var(--hazard-orange);
-  transform: skewX(-9deg) rotate(-3deg) translateX(calc((1 - var(--enter)) * 140px));
+  transform: rotate(-3deg) translateX(calc((1 - var(--enter)) * 140px));
 }
 
 /* coretan marker di bawah "ME" */
-.accent::after {
-  content: '';
-  position: absolute;
-  left: -4%;
-  right: -6%;
-  bottom: -0.12em;
-  height: 0.16em;
-  background: var(--hazard-orange);
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 10'%3E%3Cpath d='M2 6 Q12 0 22 6 T42 6 T62 6 T82 6 T102 6 T122 6 T142 6 T158 5' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 10'%3E%3Cpath d='M2 6 Q12 0 22 6 T42 6 T62 6 T82 6 T102 6 T122 6 T142 6 T158 5' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
-}
+
 
 .intro {
   max-width: 48ch;
@@ -543,6 +628,12 @@
   }
 }
 
+@media (max-height: 800px) {
+  .tag {
+    display: none;
+  }
+}
+
 /* ---------- layar kecil ---------- */
 
 @media (max-width: 900px) {
@@ -569,10 +660,16 @@
   }
 
   .tag,
-  .caption,
   .intro,
-  .note {
+  .note,
+  .bar,
+  .paper,
+  .dots {
     display: none;
+  }
+
+  .frame {
+    margin-bottom: 9px;
   }
 
   .stack {

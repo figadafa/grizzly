@@ -10,15 +10,23 @@
 
 @font-face {
   font-family: 'Urban Spray';
-  src: url('../assets/font/URBAN SPRAY.ttf') format('truetype');
+  src: url('../assets/font/URBAN%20SPRAY.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Caveat';
+  src: url('../assets/font/Caveat-VariableFont_wght.ttf') format('truetype');
+  font-weight: 400 700;
   font-display: swap;
 }
 
 :root {
   --font-display-gagalin: 'Gagalin-Regular', sans-serif;
   --font-display-urban: 'Urban Spray', sans-serif;
+  --font-handwritten: 'Caveat', 'Segoe Print', 'Bradley Hand', cursive;
   --font-body: 'Inter', sans-serif;
 
   /* Spacing */
