@@ -1,0 +1,43 @@
+/* Hero yang membesar tidak boleh bocor keluar area hero */
+.viewport {
+  overflow: hidden;
+}
+
+.stage {
+  /* durasi ini = ZOOM_OUT_MS di Intro.jsx */
+  transition: transform 1.3s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* Posisi awal close-up. transition: none supaya langsung "di sana"
+   (tertutup loader), lalu saat class ini dilepas barulah zoom out beranimasi. */
+.zoomed {
+  transform: translate(var(--dx), var(--dy)) scale(var(--s));
+  transition: none;
+}
+
+.skip {
+  position: fixed;
+  right: 1.25rem;
+  bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  z-index: 10000;
+  padding: 0.55rem 1rem;
+  background: rgba(20, 17, 15, 0.6);
+  border: 1px solid rgba(240, 235, 226, 0.35);
+  border-radius: 999px;
+  color: var(--concrete-cream, #f0ebe2);
+  font-family: "Urban Spray", var(--font-body, system-ui, sans-serif);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.skip:hover {
+  border-color: var(--hazard-orange, #ff6a00);
+  color: var(--hazard-orange, #ff6a00);
+}
+
+.skip:focus-visible {
+  outline: 2px solid var(--hazard-orange, #ff6a00);
+  outline-offset: 3px;
+}

@@ -1,0 +1,87 @@
+.loader {
+  /* durasi + delay spray; total harus <= SPRAY_MS di Intro.jsx (2200ms) */
+  --spray-ms: 2400ms;
+  --spray-delay: 200ms;
+  --spray-ease: cubic-bezier(0.65, 0, 0.35, 1);
+
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  background: var(--asphalt-black, #14110f);
+  transition: opacity 0.6s ease;
+}
+
+.fade {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.frame {
+  position: relative;
+  width: min(86vw, 800px);
+}
+
+/* clip-path: tulisan "disemprot" dari kiri ke kanan */
+.reveal {
+  clip-path: inset(-30% 100% -30% -5%);
+  animation: wipe var(--spray-ms) var(--spray-ease) var(--spray-delay) both;
+}
+
+@keyframes wipe {
+  to {
+    clip-path: inset(-30% -5% -30% -5%);
+  }
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.text,
+.glow {
+  /* ganti "Urban Spray" dengan nama font-family di @font-face-mu */
+  font-family: "Urban Spray", var(--font-display-gagalin, Impact), sans-serif;
+  font-size: 130px;
+  fill: var(--hazard-orange, #ff6a00);
+}
+
+.glow {
+  opacity: 0.55;
+}
+
+/* kepala semprotan: bergerak sinkron dengan tepi clip-path */
+.nozzle {
+  position: absolute;
+  top: 52%;
+  left: 0;
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #fff3e6 0 18%,
+    var(--hazard-orange, #ff6a00) 45%,
+    transparent 72%
+  );
+  animation:
+    sweep var(--spray-ms) var(--spray-ease) var(--spray-delay) both,
+    nozzleOut 300ms ease calc(var(--spray-delay) + var(--spray-ms) - 300ms) both;
+}
+
+@keyframes sweep {
+  to {
+    left: 105%;
+  }
+}
+
+@keyframes nozzleOut {
+  to {
+    opacity: 0;
+  }
+}

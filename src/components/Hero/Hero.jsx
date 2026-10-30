@@ -14,7 +14,7 @@ const Hero = () => {
               <span className={styles.roleLabelSecondary}>DATA & CREATIVE DEVELOPER</span>
             </div>
             
-            <h2 className={styles.headline}>
+            <h2 data-zoom-target className={styles.headline}>
               <span className={styles.builtThrough}>
                 BUILT THROUGH
                 <img src="/src/assets/images/Asset6.png" alt="" className={styles.headlineSplatter} />
