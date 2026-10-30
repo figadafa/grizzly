@@ -1,0 +1,604 @@
+/* ==========================================================
+   PROJECTS: transisi dari About + daftar proyek.
+   --enter  (0 -> 1): section naik menutupi About
+   --reveal (0 -> 1): judul WORK muncul
+   Keduanya diisi oleh Projects.jsx.
+   ========================================================== */
+
+.projects {
+  --enter: 0;
+  --reveal: 0;
+  --cols: 4.2rem minmax(0, 2.4fr) minmax(0, 1.4fr) minmax(0, 1.4fr) 4.5rem;
+
+  position: relative;
+  z-index: 8; /* di atas About (z-index 7) */
+  min-height: 100svh;
+  padding: calc(var(--header-height, 88px) + var(--spacing-lg)) 0 var(--spacing-xl);
+  color: var(--concrete-cream);
+  background:
+    radial-gradient(ellipse 50% 40% at 18% 0%, rgba(243, 107, 53, 0.1), transparent 70%),
+    var(--asphalt-black);
+}
+
+/* grain tipis, sama seperti di Hero */
+.projects::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+/* ---------- transisi dari About ---------- */
+
+/* About sedikit meredup saat Projects naik. About tidak diubah ukurannya
+   dan tetap terbaca, jadi tidak terasa tertutup berlebihan. */
+.dim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 100svh;
+  background: #000;
+  opacity: calc(var(--enter) * 0.4);
+  pointer-events: none;
+}
+
+/* bayangan lembut di tepi atas agar pertemuan About dan Projects tidak tegas */
+.projects::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(80px, 14svh, 140px);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.35), transparent);
+  pointer-events: none;
+}
+
+/* garis cat oranye menyapu tepi atas, lalu tinggal sebagai garis pemisah */
+.slash {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: var(--hazard-orange);
+  pointer-events: none;
+  clip-path: polygon(
+    0 0,
+    calc(var(--enter) * 140%) 0,
+    calc(var(--enter) * 140% - 3%) 100%,
+    0 100%
+  );
+}
+
+/* ---------- layout ---------- */
+
+.inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+  box-sizing: border-box;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: clamp(1rem, 3svh, 2rem);
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--steel-gray);
+  opacity: calc(0.2 + var(--enter) * 0.8);
+}
+
+.metaLeft b {
+  color: var(--hazard-orange);
+  font-weight: 700;
+  margin-right: 0.9rem;
+}
+
+.metaRight {
+  max-width: 26ch;
+  line-height: 1.6;
+}
+
+/* ---------- judul ---------- */
+
+.heading {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--spacing-lg);
+  margin-bottom: clamp(2rem, 6svh, 4rem);
+}
+
+.title {
+  position: relative;
+  margin: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+/* topeng agar WORK terbit dari bawah */
+.titleMask {
+  display: block;
+  overflow: hidden;
+  padding: 0.04em 0.06em 0.02em;
+}
+
+.titleText {
+  display: block;
+  font-family: var(--font-display-gagalin);
+  font-weight: normal;
+  font-size: clamp(4.5rem, 19vw, 16rem);
+  line-height: 0.86;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--concrete-cream);
+  transform: translateY(calc((1 - var(--reveal)) * 105%));
+}
+
+.count {
+  margin-top: 0.6rem;
+  font-family: var(--font-body);
+  font-size: clamp(0.9rem, 1.6vw, 1.25rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--hazard-orange);
+  /* muncul setelah WORK hampir naik, bukan sendirian di awal transisi */
+  opacity: clamp(0, calc((var(--reveal) - 0.55) * 2.2), 1);
+  transform: translateY(calc((1 - var(--reveal)) * 20px));
+}
+
+/* ---------- toggle LIST / GRID ---------- */
+
+.toggle {
+  display: inline-flex;
+  padding: 6px;
+  border: 1px solid rgba(119, 115, 110, 0.35);
+  border-radius: 999px;
+  background: rgba(36, 36, 36, 0.5);
+  flex-shrink: 0;
+  margin-bottom: 0.6rem;
+}
+
+.toggleBtn {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 1.4rem;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--concrete-cream);
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.toggleBtn[aria-pressed='true'] {
+  background: var(--concrete-cream);
+  color: var(--asphalt-black);
+}
+
+.toggleBtn:not([aria-pressed='true']):hover {
+  background: var(--deep-charcoal);
+}
+
+.toggleBtn:focus-visible,
+.row:focus-visible {
+  outline: 2px solid var(--hazard-orange);
+  outline-offset: 3px;
+}
+
+/* ---------- tabel ---------- */
+
+.tableHead {
+  display: grid;
+  grid-template-columns: var(--cols);
+  gap: var(--spacing-md);
+  padding: 0 0 1rem;
+  border-bottom: 1px solid rgba(119, 115, 110, 0.35);
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--steel-gray);
+}
+
+.tableHead span:last-child {
+  text-align: right;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  position: relative;
+  border-bottom: 1px solid rgba(119, 115, 110, 0.35);
+}
+
+/* garis pemisah ditarik dari kiri ke kanan */
+.item::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--hazard-orange);
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0.9;
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.item:has(.row[data-active='true'])::after {
+  transform: scaleX(1);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: var(--cols);
+  gap: var(--spacing-md);
+  align-items: center;
+  padding: clamp(1.1rem, 3.2svh, 2rem) 0;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  /* muncul bergantian setelah judul */
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.list[data-in='true'] .row {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.6s ease calc(var(--i) * 80ms),
+    transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--i) * 80ms);
+}
+
+.row[data-unavailable='true'] {
+  cursor: default;
+}
+
+.num,
+.type,
+.role,
+.year {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--steel-gray);
+  transition: color 0.25s ease;
+}
+
+.year {
+  text-align: right;
+  color: var(--concrete-cream);
+}
+
+.name {
+  font-family: var(--font-display-gagalin);
+  font-size: clamp(1.9rem, 4.4vw, 4rem);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--concrete-cream);
+  min-width: 0;
+  overflow-wrap: anywhere;
+  transition: color 0.25s ease, transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* baris yang disorot: judul oranye dan bergeser, baris lain meredup */
+.list[data-has-active='true'] .row:not([data-active='true']) {
+  opacity: 0.35;
+}
+
+.list[data-in='true'] .row[data-active='true'] .name,
+.row:focus-visible .name {
+  color: var(--hazard-orange);
+  transform: translateX(14px);
+}
+
+.row[data-active='true'] .num,
+.row[data-active='true'] .type,
+.row[data-active='true'] .role {
+  color: var(--concrete-cream);
+}
+
+/* ---------- preview yang mengikuti kursor ---------- */
+
+.floater {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  will-change: transform;
+}
+
+.floater[data-visible='true'] {
+  opacity: 1;
+}
+
+/* lingkaran VIEW di tepi kartu preview, supaya nama proyek tetap terbaca */
+.viewDot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 84px;
+  height: 84px;
+  margin: -42px 0 0 22px; /* pusat lingkaran = tepi kiri kartu (64px dari kursor) */
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--hazard-orange);
+  color: var(--asphalt-black);
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transform: scale(0.6);
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+  z-index: 2;
+}
+
+.floater[data-visible='true'] .viewDot {
+  transform: scale(1);
+}
+
+/* kartu pindah ke kiri kursor: lingkaran ikut ke tepi kanan kartu */
+.floater[data-side='left'] .viewDot {
+  margin-left: -106px;
+}
+
+/* kartu preview: bahasa visual sama dengan foto di About */
+.previewCard {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: clamp(240px, 24vw, 380px);
+  aspect-ratio: 4 / 5;
+  transform: translate(64px, -50%) rotate(-2deg);
+  background: var(--deep-charcoal);
+  border: 1px solid rgba(243, 107, 53, 0.85);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+}
+
+.floater[data-side='left'] .previewCard {
+  transform: translate(calc(-100% - 64px), -50%) rotate(2deg);
+}
+
+.previewLayer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.previewLayer[data-on='true'] {
+  opacity: 1;
+}
+
+/* ---------- thumbnail dan placeholder ---------- */
+
+.thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.thumbImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.placeholder {
+  display: grid;
+  place-items: center;
+  background-color: var(--deep-charcoal);
+  background-image: radial-gradient(circle, rgba(243, 107, 53, 0.35) 1.5px, transparent 2px);
+  background-size: 14px 14px;
+}
+
+.placeholderText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--concrete-cream);
+  background: var(--deep-charcoal);
+  padding: 0.9rem 1.2rem;
+}
+
+.placeholderText small {
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  color: var(--steel-gray);
+}
+
+.placeholderNum {
+  position: absolute;
+  right: 0.9rem;
+  bottom: 0.7rem;
+  font-family: var(--font-display-gagalin);
+  font-size: 2.6rem;
+  line-height: 1;
+  color: var(--hazard-orange);
+}
+
+/* ---------- tampilan GRID ---------- */
+
+.list[data-view='grid'] {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-lg) var(--spacing-lg);
+}
+
+.list[data-view='grid'] .item {
+  border-bottom: none;
+}
+
+.list[data-view='grid'] .item::after {
+  display: none;
+}
+
+.list[data-view='grid'] .row {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'thumb thumb thumb'
+    'num name year'
+    'type type role';
+  gap: 0.6rem var(--spacing-md);
+  padding: 0;
+}
+
+.list[data-view='grid'] .row > .thumb {
+  grid-area: thumb;
+  aspect-ratio: 4 / 3;
+  height: auto;
+  border: 1px solid rgba(119, 115, 110, 0.35);
+  overflow: hidden;
+  transition: border-color 0.25s ease;
+}
+
+.list[data-view='grid'] .num { grid-area: num; }
+.list[data-view='grid'] .name { grid-area: name; font-size: clamp(1.5rem, 2.6vw, 2.4rem); }
+.list[data-view='grid'] .year { grid-area: year; }
+.list[data-view='grid'] .type { grid-area: type; }
+.list[data-view='grid'] .role { grid-area: role; text-align: right; }
+
+.list[data-view='grid'] .row:hover > .thumb,
+.list[data-view='grid'] .row:focus-visible > .thumb {
+  border-color: var(--hazard-orange);
+}
+
+.list[data-view='grid'] .row:hover .name {
+  color: var(--hazard-orange);
+}
+
+/* header tabel disembunyikan pada grid */
+.tableHead[data-view='grid'] {
+  display: none;
+}
+
+/* ---------- layar sentuh dan layar kecil ---------- */
+
+@media (hover: none), (pointer: coarse), (max-width: 900px) {
+  .floater {
+    display: none;
+  }
+
+  .list[data-has-active='true'] .row:not([data-active='true']) {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 900px) {
+  .projects {
+    --cols: 2.6rem minmax(0, 1fr) auto;
+  }
+
+  .inner {
+    padding: 0 var(--spacing-md);
+  }
+
+  .meta {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+  }
+
+  .tableHead {
+    display: none;
+  }
+
+  .row {
+    grid-template-columns: var(--cols);
+    grid-template-areas:
+      'num name year'
+      '.   type type'
+      '.   role role';
+    gap: 0.35rem var(--spacing-md);
+    align-items: baseline;
+  }
+
+  .num { grid-area: num; }
+  .name { grid-area: name; font-size: clamp(1.6rem, 7vw, 2.4rem); }
+  .year { grid-area: year; }
+  .type { grid-area: type; }
+  .role { grid-area: role; }
+
+  .list[data-view='grid'] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .titleText,
+  .count {
+    transform: none;
+  }
+
+  .row,
+  .list[data-in='true'] .row {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .item::after,
+  .name,
+  .viewDot,
+  .floater,
+  .previewLayer {
+    transition: none;
+  }
+
+  .list[data-in='true'] .row[data-active='true'] .name,
+  .row:focus-visible .name {
+    transform: none;
+  }
+}
