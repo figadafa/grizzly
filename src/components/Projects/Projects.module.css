@@ -9,6 +9,7 @@
   --enter: 0;
   --reveal: 0;
   --cols: 4.2rem minmax(0, 2.4fr) minmax(0, 1.4fr) minmax(0, 1.4fr) 4.5rem;
+  overflow-x: clip;
 
   position: relative;
   z-index: 8; /* di atas About (z-index 7) */
@@ -57,21 +58,40 @@
   pointer-events: none;
 }
 
-/* garis cat oranye menyapu tepi atas, lalu tinggal sebagai garis pemisah */
+/* sapuan cat semprot: tebal saat masuk, lalu mengendap jadi garis tipis */
 .slash {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 8px;
-  background: var(--hazard-orange);
+  height: calc(8px + (1 - var(--enter)) * 18px);
+  background: var(--hazard-orange) url('/images/speckle.png');
+  background-size: 180px auto;
   pointer-events: none;
+  /* tepi kasar, bukan garis lurus */
   clip-path: polygon(
     0 0,
     calc(var(--enter) * 140%) 0,
+    calc(var(--enter) * 140% - 1.5%) 35%,
+    calc(var(--enter) * 140% - 4%) 60%,
+    calc(var(--enter) * 140% - 2%) 80%,
     calc(var(--enter) * 140% - 3%) 100%,
     0 100%
   );
+}
+
+/* tetesan cat yang turun dari ujung sapuan */
+.slash::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: calc(var(--enter) * 140% - 12%);
+  width: 6px;
+  height: calc(var(--enter) * 36px);
+  background: var(--hazard-orange);
+  border-radius: 0 0 4px 4px;
+  opacity: var(--enter);
+  pointer-events: none;
 }
 
 /* ---------- layout ---------- */
@@ -418,7 +438,9 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
+  background: var(--asphalt-black);
   display: block;
 }
 
