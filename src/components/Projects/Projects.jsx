@@ -239,11 +239,11 @@ const Projects = () => {
         data-side="right"
         aria-hidden="true"
       >
-        <span className={styles.viewDot}>View</span>
+        <span className={styles.viewDot} aria-hidden="true" />
         <div ref={cardRef} className={styles.previewCard}>
           {PROJECTS.map((p, i) => (
             <div key={p.id} className={styles.previewLayer} data-on={active === p.id}>
-              <Thumb project={p} index={i} />
+              <Thumb project={p} index={i} eager />
             </div>
           ))}
         </div>
@@ -253,11 +253,17 @@ const Projects = () => {
 };
 
 /* gambar preview, atau tile placeholder bila belum ada gambar */
-const Thumb = ({ project, index }) => {
+const Thumb = ({ project, index, eager = false }) => {
   if (project.image) {
     return (
       <span className={styles.thumb}>
-        <img src={project.image} alt={project.alt} loading="lazy" className={styles.thumbImg} />
+        <img
+          src={project.image}
+          alt={project.alt}
+          loading={eager ? 'eager' : 'lazy'}
+          decoding="async"
+          className={styles.thumbImg}
+        />
       </span>
     );
   }

@@ -5,6 +5,7 @@ import About from "./components/About/About";
 import Projects from "./components/Projects/Projects";
 import Intro from "./components/intro/intro.jsx";
 
+
 function App() {
   return (
     <div className="app">
@@ -14,10 +15,9 @@ function App() {
         <Intro>
           <Hero />
         </Intro>
-
         <About />
-
         <Projects />
+       
 
         {/* Other sections will be added here */}
       </main>
