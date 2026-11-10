@@ -4,7 +4,7 @@ import Hero from "./components/Hero/Hero";
 import About from "./components/About/About";
 import Projects from "./components/Projects/Projects";
 import Intro from "./components/intro/intro.jsx";
-
+import Experiences from "./components/Experiences/experiences.jsx";
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
         </Intro>
         <About />
         <Projects />
-       
+       <Experiences/>
 
         {/* Other sections will be added here */}
       </main>
