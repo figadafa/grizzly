@@ -1,16 +1,25 @@
 .loader {
-  /* durasi + delay spray; total harus <= SPRAY_MS di Intro.jsx (2200ms) */
-  --spray-ms: 2400ms;
-  --spray-delay: 200ms;
-  --spray-ease: cubic-bezier(0.65, 0, 0.35, 1);
+  /* Waktu. Huruf ke-i mulai di: --start + i × --step.
+     Total animasi (huruf terakhir + coretan) ±2.3s, harus ≤ SPRAY_MS di intro.jsx. */
+  --start: 150ms;
+  --step: 180ms;
+  --swoosh-delay: 1500ms;
+  --fade-ms: 500ms; /* samakan dengan FADE_MS di intro.jsx */
 
   position: fixed;
   inset: 0;
   z-index: 9999;
   display: grid;
   place-items: center;
-  background: var(--asphalt-black, #14110f);
-  transition: opacity 0.6s ease;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      ellipse 60% 50% at 50% 45%,
+      color-mix(in srgb, var(--hazard-orange, #f36b35) 9%, transparent),
+      transparent 70%
+    ),
+    var(--asphalt-black, #171717);
+  transition: opacity var(--fade-ms) ease;
 }
 
 .fade {
@@ -18,70 +27,176 @@
   pointer-events: none;
 }
 
-.frame {
+/* grain tipis ala tembok beton, sama seperti di Hero */
+.loader::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.07;
+  pointer-events: none;
+}
+
+.defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.art {
   position: relative;
-  width: min(86vw, 800px);
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  width: min(92vw, 900px);
+  filter: url(#grizzly-rough);
 }
 
-/* clip-path: tulisan "disemprot" dari kiri ke kanan */
-.reveal {
-  clip-path: inset(-30% 100% -30% -5%);
-  animation: wipe var(--spray-ms) var(--spray-ease) var(--spray-delay) both;
+/* ---------- tulisan ---------- */
+
+.word {
+  display: flex;
+  justify-content: center;
+  gap: 0.03em;
+  font-family: var(--font-display-urban, "Urban Spray"), Impact, sans-serif;
+  font-size: clamp(3.2rem, 17vw, 10rem);
+  line-height: 0.95;
 }
 
-@keyframes wipe {
-  to {
-    clip-path: inset(-30% -5% -30% -5%);
+.letter {
+  position: relative;
+  isolation: isolate;
+  display: inline-block;
+  color: var(--hazard-orange, #f36b35);
+  /* bayangan keras krem di belakang huruf, seperti tag 3D di tembok */
+  text-shadow: 0.04em 0.05em 0 rgba(240, 235, 226, 0.85);
+  opacity: 0; /* tersembunyi sampai kena semprot */
+  transform: rotate(var(--rot));
+}
+
+/* huruf "kena semprot": mendarat dari besar dan buram, lalu tajam */
+.run .letter {
+  animation: hit 420ms cubic-bezier(0.2, 0.9, 0.25, 1.1)
+    calc(var(--start) + var(--i) * var(--step)) both;
+}
+
+@keyframes hit {
+  0% {
+    opacity: 0;
+    transform: translateY(-8%) scale(1.4) rotate(calc(var(--rot) - 6deg));
+    filter: blur(10px);
+  }
+  55% {
+    opacity: 1;
+    filter: blur(1.5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(var(--rot));
+    filter: blur(0);
   }
 }
 
-.svg {
-  display: block;
-  width: 100%;
+/* semburan cat: kabut oranye + bintik halftone di belakang huruf */
+.letter::before {
+  content: '';
+  position: absolute;
+  inset: -35% -45%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--hazard-orange, #f36b35) 55%, transparent) 0%,
+      transparent 55%
+    ),
+    radial-gradient(circle, var(--hazard-orange, #f36b35) 1.5px, transparent 2px) 0 0 / 13px 13px;
+  -webkit-mask-image: radial-gradient(closest-side, #000 20%, transparent);
+  mask-image: radial-gradient(closest-side, #000 20%, transparent);
+  opacity: 0;
+}
+
+.run .letter::before {
+  animation: burst 700ms ease-out calc(var(--start) + var(--i) * var(--step)) both;
+}
+
+@keyframes burst {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  25% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0.3; /* sisa kabut tetap menempel di tembok */
+    transform: scale(1.15);
+  }
+}
+
+/* tetesan cat yang turun dari huruf */
+.letter::after {
+  content: '';
+  position: absolute;
+  left: var(--dx);
+  top: 80%; /* geser kalau tetesan terlihat terlepas dari huruf */
+  width: 0.05em;
+  height: calc(var(--drip, 0) * 1em);
+  border-radius: 0 0 0.05em 0.05em;
+  background: var(--hazard-orange, #f36b35);
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.run .letter::after {
+  animation: drip 1100ms cubic-bezier(0.25, 0.6, 0.3, 1)
+    calc(var(--start) + var(--i) * var(--step) + 300ms) both;
+}
+
+@keyframes drip {
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* ---------- coretan spidol ---------- */
+
+.swoosh {
+  width: 86%;
   height: auto;
   overflow: visible;
 }
 
-.text,
-.glow {
-  /* ganti "Urban Spray" dengan nama font-family di @font-face-mu */
-  font-family: "Urban Spray", var(--font-display-gagalin, Impact), sans-serif;
-  font-size: 130px;
-  fill: var(--hazard-orange, #ff6a00);
+.strokeMain,
+.strokeThin {
+  fill: none;
+  stroke: var(--concrete-cream, #f0ebe2);
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1; /* garis belum digambar */
 }
 
-.glow {
-  opacity: 0.55;
+.strokeMain {
+  stroke-width: 7;
 }
 
-/* kepala semprotan: bergerak sinkron dengan tepi clip-path */
-.nozzle {
-  position: absolute;
-  top: 52%;
-  left: 0;
-  width: 22px;
-  height: 22px;
-  margin: -11px 0 0 -11px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    #fff3e6 0 18%,
-    var(--hazard-orange, #ff6a00) 45%,
-    transparent 72%
-  );
-  animation:
-    sweep var(--spray-ms) var(--spray-ease) var(--spray-delay) both,
-    nozzleOut 300ms ease calc(var(--spray-delay) + var(--spray-ms) - 300ms) both;
+.strokeThin {
+  stroke-width: 3;
+  opacity: 0.8;
 }
 
-@keyframes sweep {
+.run .strokeMain {
+  animation: draw 450ms cubic-bezier(0.5, 0, 0.2, 1) var(--swoosh-delay) both;
+}
+
+.run .strokeThin {
+  animation: draw 350ms cubic-bezier(0.5, 0, 0.2, 1) calc(var(--swoosh-delay) + 180ms) both;
+}
+
+@keyframes draw {
   to {
-    left: 105%;
-  }
-}
-
-@keyframes nozzleOut {
-  to {
-    opacity: 0;
+    stroke-dashoffset: 0;
   }
 }

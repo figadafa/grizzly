@@ -5,6 +5,7 @@ import About from "./components/About/About";
 import Projects from "./components/Projects/Projects";
 import Intro from "./components/intro/intro.jsx";
 import Experiences from "./components/Experiences/experiences.jsx";
+import Contact from "./components/Contact/Contact.jsx";
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
         </Intro>
         <About />
         <Projects />
-       <Experiences/>
+        <Experiences/>
+        <Contact />
 
         {/* Other sections will be added here */}
       </main>
