@@ -1,5 +1,5 @@
 /* ==========================================================
-   ABOUT: pinned scroll story.
+   ABOUT: pinned scroll story, street-art editorial collage.
    --enter  (0 -> 1): section masuk dari bawah layar (transisi dari hero)
    Keduanya diisi oleh About.jsx; langkah aktif (01/02/03) lewat state.
    ========================================================== */
@@ -7,19 +7,17 @@
 .about {
   --steps: 3;
   --enter: 0;
-  --offset: var(--header-height, 88px); /* tinggi header fixed; sesuaikan kalau perlu */
+  --offset: var(--header-height, 88px);
   --numcol: 4.2rem;
 
   position: relative;
-  z-index: 7; /* di atas elemen hero (z-index tertinggi di hero = 6) */
-  /* tinggi stage + jarak scroll untuk 3 langkah */
+  z-index: 7;
   height: calc(100svh - var(--offset) + var(--steps) * 75svh);
   color: var(--concrete-cream);
 }
 
 /* ---------- transisi dari hero ---------- */
 
-/* hero menggelap saat About naik menutupinya */
 .dim {
   position: absolute;
   left: 0;
@@ -40,7 +38,7 @@
   align-items: center;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 55% 60% at 24% 52%, rgba(243, 107, 53, 0.1), transparent 70%),
+    radial-gradient(ellipse 55% 60% at 24% 52%, rgba(243, 107, 53, 0.12), transparent 70%),
     var(--asphalt-black);
   clip-path: polygon(
     0 0,
@@ -48,6 +46,18 @@
     calc(var(--enter) * 150% - 30%) 100%,
     0 100%
   );
+}
+
+/* tekstur grain halus di seluruh section, seperti kertas cetak */
+.stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 
 /* pita oranye tepat di tepi sapuan */
@@ -71,6 +81,7 @@
 
 .meta {
   position: absolute;
+  z-index: 2;
   top: clamp(0.7rem, 2.6svh, 1.6rem);
   left: 0;
   right: 0;
@@ -104,6 +115,8 @@
 /* ---------- layout ---------- */
 
 .inner {
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: 100%;
   max-width: 1400px;
@@ -116,7 +129,7 @@
   align-items: center;
 }
 
-/* ---------- kiri: foto ---------- */
+/* ---------- kiri: collage ---------- */
 
 .visual {
   position: relative;
@@ -126,7 +139,6 @@
   justify-content: center;
   gap: clamp(0.7rem, 2svh, 1.2rem);
   min-width: 0;
-  /* mendarat pelan-pelan saat section masuk */
   transform: translateY(calc((1 - var(--enter)) * 70px));
 }
 
@@ -155,11 +167,12 @@
   max-width: 100%;
 }
 
-/* --- lapisan di belakang kartu foto --- */
 
-/* secarik kertas kraft di kiri atas */
+
+/* secarik kertas kraft di kiri, tepinya robek */
 .paper {
   position: absolute;
+  z-index: 1;
   top: 5%;
   left: -9%;
   width: 22%;
@@ -167,15 +180,24 @@
   background: linear-gradient(180deg, #a89f8d, #8f8676);
   transform: rotate(-2.5deg);
   opacity: 0.92;
+  clip-path: polygon(
+    0% 4%, 12% 0%, 28% 3%, 45% 0%, 63% 4%, 80% 0%, 100% 3%,
+    97% 22%, 100% 40%, 96% 61%, 100% 82%, 97% 100%,
+    78% 96%, 60% 100%, 42% 96%, 25% 100%, 8% 96%, 3% 100%,
+    0% 80%, 4% 60%, 0% 40%, 3% 20%
+  );
+  pointer-events: none;
 }
 
 /* kartu gelap bergaris oranye yang menyembul di atas dan kanan */
 .backCard {
   position: absolute;
+  z-index: 1;
   inset: -3% -6% 3% 5%;
   background: #1b1b1b;
   border: 1px solid rgba(243, 107, 53, 0.85);
   transform: rotate(2.4deg);
+  pointer-events: none;
 }
 
 .backCard::before {
@@ -188,9 +210,26 @@
   background: var(--hazard-orange);
 }
 
+/* semprotan cat tipis di pojok bawah-kiri kartu belakang */
+.backCard::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 38%;
+  height: 34%;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 88%, rgba(243, 107, 53, 0.35) 0 3px, transparent 4px),
+    radial-gradient(circle at 22% 80%, rgba(243, 107, 53, 0.22) 0 2px, transparent 3px),
+    radial-gradient(circle at 6% 72%, rgba(243, 107, 53, 0.18) 0 1.5px, transparent 2.5px),
+    radial-gradient(ellipse 60% 50% at 18% 90%, rgba(243, 107, 53, 0.1), transparent 70%);
+}
+
 /* pola titik halftone */
 .dots {
   position: absolute;
+  z-index: 1;
   background-image: radial-gradient(circle, rgba(243, 107, 53, 0.9) 1.5px, transparent 2px);
   background-size: 12px 12px;
   pointer-events: none;
@@ -212,10 +251,23 @@
   opacity: 0.6;
 }
 
+
+@keyframes peekIn {
+  from {
+    opacity: 0;
+    transform: rotate(12deg) translate(14px, 14px);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(7deg);
+  }
+}
+
 /* --- kartu foto --- */
 
 .card {
   position: absolute;
+  z-index: 3;
   inset: 0;
   margin: 0;
   display: flex;
@@ -231,19 +283,19 @@
 
 .card[data-state='active'] {
   opacity: 1;
-  z-index: 3;
+  z-index: 4;
   transform: translate(0, 0) rotate(var(--tilt)) scale(1);
 }
 
 .card[data-state='past'] {
   opacity: 0;
-  z-index: 2;
+  z-index: 3;
   transform: translate(-16%, -7%) rotate(calc(var(--tilt) - 9deg)) scale(0.94);
 }
 
 .card[data-state='next'] {
   opacity: 0;
-  z-index: 1;
+  z-index: 3;
   transform: translate(12%, 12%) rotate(calc(var(--tilt) + 8deg)) scale(0.96);
 }
 
@@ -256,7 +308,19 @@
   background: #262626;
 }
 
-/* gradasi tipis di atas foto supaya catatan tulisan tangan selalu terbaca */
+/* tekstur fotokopi tipis di atas gambar */
+.frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* gradasi tipis di atas foto */
 .frame::after {
   content: '';
   position: absolute;
@@ -272,33 +336,6 @@
   height: 100%;
   display: block;
   object-fit: cover;
-}
-
-/* catatan tulisan tangan + panah */
-.note {
-  position: absolute;
-  z-index: 2;
-  top: 5%;
-  left: 6%;
-  max-width: 56%;
-  font-family: var(--font-handwritten, 'Caveat', 'Segoe Print', 'Bradley Hand', cursive);
-  font-size: clamp(1.05rem, 2.8svh, 1.5rem);
-  font-weight: 600;
-  line-height: 1.02;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--concrete-cream);
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
-  transform: rotate(-8deg);
-  transform-origin: left top;
-}
-
-.noteArrow {
-  display: block;
-  width: 2.2em;
-  margin: 0.3em 0 0 0.3em;
-  color: var(--hazard-orange);
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
 }
 
 /* strip nama di bawah foto */
@@ -322,6 +359,42 @@
   font-size: 0.6rem;
   letter-spacing: 0.18em;
   color: var(--steel-gray);
+}
+
+/* --- FIGA signature: pojok kiri atas foto --- */
+
+.signature {
+  position: absolute;
+  z-index: 6;
+  top: 3%;
+  left: 3%;
+  font-family: var(--font-display-urban);
+  font-size: clamp(2.2rem, 7svh, 3.8rem);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--hazard-orange);
+  transform: rotate(-7deg);
+  transform-origin: left top;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.55), 0 0 14px rgba(243, 107, 53, 0.25);
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .signature {
+    animation: signatureIn 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s both;
+  }
+}
+
+@keyframes signatureIn {
+  from {
+    opacity: 0;
+    transform: rotate(-7deg) translate(-8px, 6px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-7deg);
+  }
 }
 
 /* --- selotip dan coretan cat --- */
@@ -350,6 +423,16 @@
   transform: rotate(-42deg);
 }
 
+/* selotip ketiga menempel di sudut kanan atas polaroid */
+.tapeMid {
+  top: 58%;
+  right: -4%;
+  width: 16%;
+  height: 5%;
+  transform: rotate(-30deg);
+  background: rgba(240, 235, 226, 0.7);
+}
+
 .swoosh {
   position: absolute;
   z-index: 6;
@@ -371,8 +454,9 @@
 
 .title {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.28em;
+  gap: 0.1em 0.28em;
   margin: 0 0 clamp(0.6rem, 1.8svh, 1.1rem);
   font-family: var(--font-display-gagalin);
   font-size: clamp(2.6rem, min(6.4vw, 11svh), 6rem);
@@ -380,6 +464,11 @@
   line-height: 0.92;
   text-transform: uppercase;
   color: var(--concrete-cream);
+}
+
+.accentWrap {
+  position: relative;
+  display: inline-block;
 }
 
 .accent {
@@ -392,8 +481,25 @@
   transform: rotate(-3deg) translateX(calc((1 - var(--enter)) * 140px));
 }
 
-/* coretan marker di bawah "ME" */
+/* coretan marker di bawah "JUST CODE." */
+.marker {
+  position: absolute;
+  left: 0;
+  bottom: -0.12em;
+  width: 100%;
+  height: 0.34em;
+  overflow: visible;
+  pointer-events: none;
+}
 
+.marker path {
+  fill: none;
+  stroke: var(--hazard-orange);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 320;
+  stroke-dashoffset: calc((1 - var(--enter)) * 320);
+}
 
 .intro {
   max-width: 48ch;
@@ -421,6 +527,7 @@
   position: relative;
   padding: 0 0 clamp(0.8rem, 2.4svh, 1.5rem) 2rem;
   opacity: 0.5;
+  transform: translateY(calc((1 - var(--enter)) * (var(--i, 0) * 14px + 12px)));
   transition: opacity 0.4s ease;
 }
 
@@ -579,6 +686,7 @@
 
 .hint {
   position: absolute;
+  z-index: 2;
   right: var(--spacing-lg);
   bottom: clamp(0.8rem, 2.6svh, 1.6rem);
   display: flex;
@@ -626,6 +734,9 @@
   .bodyWrap {
     transition: none;
   }
+  .marker path {
+    stroke-dashoffset: 0;
+  }
 }
 
 @media (max-height: 800px) {
@@ -661,11 +772,18 @@
 
   .tag,
   .intro,
-  .note,
   .bar,
   .paper,
-  .dots {
+  .dots,
+  .tapeMid {
     display: none;
+  }
+
+  .blob {
+    width: 58%;
+    height: 50%;
+    top: -6%;
+    left: -6%;
   }
 
   .frame {
@@ -674,6 +792,12 @@
 
   .stack {
     height: min(22svh, 200px);
+  }
+
+  .signature {
+    font-size: clamp(1.4rem, 6svh, 2.2rem);
+    top: 12%;
+    left: 6%;
   }
 
   .title {
