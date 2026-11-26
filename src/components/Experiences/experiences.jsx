@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styles from './Experience.module.css';
+import styles from './experience.module.css';
 import { EXPERIENCES, CERTIFICATIONS, EXTRA_CERT_COUNT, EDUCATION } from './experienceData';
 
 /*

@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Hero.module.css';
 import Button from '../Button/Button';
+import headlineSplatter from '../../assets/images/Asset6.png';
 
 const Hero = () => {
   return (
@@ -17,7 +18,7 @@ const Hero = () => {
             <h2 data-zoom-target className={styles.headline}>
               <span className={styles.builtThrough}>
                 BUILT THROUGH
-                <img src="/src/assets/images/Asset6.png" alt="" className={styles.headlineSplatter} />
+                <img src={headlineSplatter} alt="" className={styles.headlineSplatter} />
               </span>
               <span className={styles.friction}>
                 <span className={styles.f}>F</span>

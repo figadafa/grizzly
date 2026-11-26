@@ -9,7 +9,7 @@
   justify-content: center;
   padding-top: var(--spacing-md);
   padding-bottom: var(--spacing-lg);
-  background-image: url('/src/assets/images/BackgroundHero.png');
+
   background-size: cover;
   background-position: center bottom;
   background-repeat: no-repeat;
