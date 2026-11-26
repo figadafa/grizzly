@@ -12,19 +12,10 @@
   position: relative;
   z-index: 9;
   overflow-x: clip;
-  padding: 0; /* padding dipindah ke .block agar tidak bertumpuk */
+  padding: 0;
   color: var(--concrete-cream);
   background: var(--asphalt-black);
   border-top: 1px solid rgba(119, 115, 110, 0.35);
-}
-
-.block {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr);
-  align-items: start; /* kolom kiri tidak ikut melebar */
-  gap: clamp(2rem, 4vw, 3.5rem) var(--spacing-lg);
-  padding: clamp(2.5rem, 6svh, 4rem) 0;
-  border-bottom: 1px solid rgba(119, 115, 110, 0.25);
 }
 
 /* grain tipis, sama seperti Projects */
@@ -99,6 +90,7 @@
 .block {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr);
+  align-items: start;
   gap: var(--spacing-xl) var(--spacing-lg);
   padding: clamp(3rem, 8svh, 5rem) 0;
   border-bottom: 1px solid rgba(119, 115, 110, 0.25);
@@ -116,7 +108,7 @@
   font-size: 0.68rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--concrete-cream); /* Changed from steel-gray */
+  color: var(--concrete-cream);
   opacity: calc(0.2 + var(--reveal) * 0.8);
   line-height: 1;
 }
@@ -179,8 +171,8 @@
   font-family: var(--font-body);
   font-size: 0.98rem;
   line-height: 1.6;
-  color: var(--concrete-cream); /* Changed from steel-gray for better contrast */
-  opacity: 0.72; /* Use specific opacity for better contrast */
+  color: var(--concrete-cream);
+  opacity: 0.72;
   transition: opacity 0.4s ease;
 }
 
@@ -226,12 +218,12 @@
 }
 
 .entry:hover {
-  border-left: 2px solid var(--hazard-orange); /* Active/hover state */
-  padding-left: 2.3rem; /* Adjust padding due to border */
+  border-left: 2px solid var(--hazard-orange);
+  padding-left: 2.3rem;
 }
 
 .entry:hover .node {
-  background: var(--hazard-orange); /* Node fills with orange */
+  background: var(--hazard-orange);
 }
 
 .entry:last-child {
@@ -257,7 +249,7 @@
   font-family: var(--font-display-gagalin);
   font-size: clamp(2.4rem, 4vw, 3.4rem);
   line-height: 1;
-  color: var(--steel-gray); /* Use steel-gray as specified */
+  color: var(--steel-gray);
   opacity: 0.35;
 }
 
@@ -289,7 +281,7 @@
   font-size: 0.75rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--concrete-cream); /* Changed from steel-gray */
+  color: var(--concrete-cream);
   opacity: 0.72;
 }
 
@@ -303,7 +295,7 @@
   font-family: var(--font-body);
   font-size: 0.95rem;
   line-height: 1.7;
-  color: var(--concrete-cream); /* Changed from steel-gray */
+  color: var(--concrete-cream);
   opacity: 0.72;
 }
 
@@ -334,6 +326,37 @@
   padding: 1.4rem;
 }
 
+/* baris logo + label penyelenggara */
+.certHead {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  min-height: 2.25rem;
+}
+
+/* logo transparan langsung di atas latar gelap, tanpa kotak */
+.certLogo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  height: 36px;
+  max-width: 120px;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.certLogoImg {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
 .provider {
   font-family: var(--font-body);
   font-size: 0.7rem;
@@ -356,7 +379,7 @@
   margin: 0;
   font-family: var(--font-body);
   font-size: 0.85rem;
-  color: var(--concrete-cream); /* Changed from steel-gray */
+  color: var(--concrete-cream);
   opacity: 0.72;
 }
 
@@ -448,6 +471,14 @@
   color: var(--concrete-cream);
 }
 
+/* logo di dalam seal education */
+.sealLogo {
+  display: block;
+  width: 62%;
+  height: 62%;
+  object-fit: contain;
+}
+
 .schoolName {
   font-family: var(--font-body);
   font-size: 1.3rem;
@@ -517,12 +548,12 @@
   border-color: var(--hazard-orange);
 }
 
-/* Add focus-visible for certs and more */
+/* focus-visible untuk kartu certifications dan more */
 .cert:focus-visible,
 .more:focus-visible {
   outline: 2px solid var(--hazard-orange);
   outline-offset: 3px;
-  transform: translateY(-4px); /* Apply the hover transform on focus-visible */
+  transform: translateY(-4px);
   border-color: var(--hazard-orange);
 }
 
@@ -534,16 +565,11 @@
   }
 }
 
-@media (max-width: 768px) {
-  .certGrid {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-  }
-}
-
 @media (max-width: 900px) {
   .sideHead {
     margin-right: 0;
   }
+
   .inner {
     padding: 0 var(--spacing-md);
   }
@@ -559,6 +585,17 @@
 
   .divider {
     display: none;
+  }
+
+  .certLogo {
+    height: 30px;
+    max-width: 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .certGrid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 }
 

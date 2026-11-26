@@ -92,7 +92,6 @@ const Experience = () => {
           <SectionHead
             id="experience-title"
             metaLabel="Experience"
-            label="Experience"
             lines={['The', 'Journey']}
             lead="A record of leadership, collaboration, and continuous learning through organizations, projects, and training."
             crown
@@ -129,18 +128,29 @@ const Experience = () => {
 
           <div className={styles.certGrid}>
             {CERTIFICATIONS.map((c, i) => {
-              const Tag = c.url ? 'article' : 'div';
               const LinkTag = c.url ? 'a' : 'article';
               return (
                 <LinkTag
                   key={c.id}
                   href={c.url || undefined}
-                  target={c.url ? "_blank" : undefined}
-                  rel={c.url ? "noopener noreferrer" : undefined}
+                  target={c.url ? '_blank' : undefined}
+                  rel={c.url ? 'noopener noreferrer' : undefined}
                   className={styles.cert}
                   style={{ '--i': i }}
                 >
-                  <span className={styles.provider}>{c.provider}</span>
+                  <div className={styles.certHead}>
+                    {c.logo && (
+                      <span className={styles.certLogo}>
+                        <img
+                          src={c.logo}
+                          alt={c.logoAlt || `Logo ${c.provider}`}
+                          className={styles.certLogoImg}
+                          loading="lazy"
+                        />
+                      </span>
+                    )}
+                    <span className={styles.provider}>{c.provider}</span>
+                  </div>
                   <h3 className={styles.certName}>{c.name}</h3>
                   <p className={styles.certIssuer}>{c.issuer}</p>
                   <div className={styles.certFoot}>
@@ -169,7 +179,17 @@ const Experience = () => {
 
           <div className={styles.eduCard}>
             <div className={styles.school}>
-              <span className={styles.seal} aria-hidden="true">{EDUCATION.shortName}</span>
+              {EDUCATION.logo ? (
+                <span className={styles.seal}>
+                  <img
+                    src={EDUCATION.logo}
+                    alt={EDUCATION.logoAlt || `Logo ${EDUCATION.shortName}`}
+                    className={styles.sealLogo}
+                  />
+                </span>
+              ) : (
+                <span className={styles.seal} aria-hidden="true">{EDUCATION.shortName}</span>
+              )}
               <span className={styles.schoolName}>{EDUCATION.school}</span>
             </div>
             <span className={styles.divider} aria-hidden="true" />
