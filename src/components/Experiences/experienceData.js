@@ -37,7 +37,7 @@ export const CERTIFICATIONS = [
     name: 'Belajar Dasar Data Science',
     issuer: 'Dicoding Indonesia',
     date: 'Jun 2026',
-    logo: 'public/images/dicodinglogo.png',
+    logo: '/images/dicodinglogo.png',
     logoAlt: 'Logo Dicoding',
   },
   {
@@ -46,7 +46,7 @@ export const CERTIFICATIONS = [
     name: 'Junior Cybersecurity Analyst Career Path',
     issuer: 'Cisco',
     date: 'Aug 2025',
-    logo: 'public/images/logocisco.png',
+    logo: '/images/logocisco.png',
     logoAlt: 'Logo Cisco',
   },
   {
@@ -55,7 +55,7 @@ export const CERTIFICATIONS = [
     name: 'Spec-Driven Development dengan Kiro',
     issuer: 'Dicoding Indonesia',
     date: 'Jun 2026',
-    logo: 'public/images/dicodinglogo.png',
+    logo: '/images/dicodinglogo.png',
     logoAlt: 'Logo Dicoding',
   },
   {
@@ -64,7 +64,7 @@ export const CERTIFICATIONS = [
     name: 'English for Specific Purposes (ESP) Program',
     issuer: 'Universitas Muhammadiyah Malang',
     date: 'May 2026',
-    logo: 'public/images/UMM_LOGO.png',
+    logo: '/images/UMM_LOGO.png',
     logoAlt: 'Logo Universitas Muhammadiyah Malang',
   },
 ];
@@ -77,6 +77,6 @@ export const EDUCATION = {
   degree: "Bachelor's Degree in Informatics",
   period: '2024 — Present',
   desc: 'Focused on software development, computer science fundamentals, data science, and information technology.',
-  logo: 'public/images/UMM_LOGO.png',
+  logo: '/images/UMM_LOGO.png',
   logoAlt: 'Logo Universitas Muhammadiyah Malang',
 };
