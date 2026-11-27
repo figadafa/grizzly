@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './Projects.module.css';
 import { PROJECTS } from './projectsData';
 
 /*
-  PROJECTS: transisi dari About + daftar proyek.
+  PROJECTS: transisi dari About + daftar proyek dalam bentuk tabel.
   --enter  (0 -> 1): section naik menutupi About (garis cat oranye + peredupan About)
   --reveal (0 -> 1): judul WORK dan baris tabel muncul
   Keduanya diisi lewat scroll, sama seperti pola di About.jsx.
@@ -16,16 +16,6 @@ const ease = (t) => t * t * (3 - 2 * t);
 
 const Projects = () => {
   const sectionRef = useRef(null);
-  const listRef = useRef(null);
-  const floaterRef = useRef(null);
-  const cardRef = useRef(null);
-  const target = useRef({ x: 0, y: 0 });
-  const current = useRef({ x: 0, y: 0 });
-  const frame = useRef(0);
-  const reduceRef = useRef(false);
-
-  const [view, setView] = useState('list');
-  const [active, setActive] = useState(null);
   const [revealed, setRevealed] = useState(false);
 
   /* ---------- progres scroll ---------- */
@@ -34,7 +24,6 @@ const Projects = () => {
     if (!section) return undefined;
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-    reduceRef.current = reduce.matches;
     let raf = 0;
 
     const update = () => {
@@ -64,80 +53,6 @@ const Projects = () => {
     };
   }, []);
 
-  /* ---------- preview yang mengikuti kursor ---------- */
-  const paint = useCallback(() => {
-    frame.current = 0;
-    const floater = floaterRef.current;
-    const card = cardRef.current;
-    if (!floater) return;
-
-    const ease = reduceRef.current ? 1 : 0.18;
-    current.current.x += (target.current.x - current.current.x) * ease;
-    current.current.y += (target.current.y - current.current.y) * ease;
-
-    const { x, y } = current.current;
-    floater.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
-
-    // balik ke sisi kiri kursor jika kartu hampir keluar layar
-    if (card) {
-      const flip = x + card.offsetWidth + 70 > window.innerWidth;
-      floater.dataset.side = flip ? 'left' : 'right';
-    }
-
-    const dx = Math.abs(target.current.x - x);
-    const dy = Math.abs(target.current.y - y);
-    if (dx > 0.3 || dy > 0.3) frame.current = window.requestAnimationFrame(paint);
-  }, []);
-
-  const moveTo = useCallback(
-    (x, y, snap = false) => {
-      target.current = { x, y };
-      if (snap) current.current = { x, y };
-      if (!frame.current) frame.current = window.requestAnimationFrame(paint);
-    },
-    [paint],
-  );
-
-  useEffect(
-    () => () => {
-      if (frame.current) window.cancelAnimationFrame(frame.current);
-    },
-    [],
-  );
-
-  const onPointerMove = (e) => {
-    if (e.pointerType === 'touch') return;
-    moveTo(e.clientX, e.clientY);
-  };
-
-  const onRowEnter = (e, id) => {
-    if (e.pointerType === 'touch') return;
-    // saat pertama kali muncul, langsung berada di kursor (tanpa meluncur dari pojok)
-    if (active === null) moveTo(e.clientX, e.clientY, true);
-    setActive(id);
-  };
-
-  const onRowFocus = (e, id) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    moveTo(rect.left + rect.width * 0.62, rect.top + rect.height / 2, true);
-    setActive(id);
-  };
-
-  const clear = () => setActive(null);
-
-  const isGrid = view === 'grid';
-  const hasActive = active !== null && !isGrid;
-
-  const renderCells = (p, i) => (
-    <>
-      <span className={styles.num}>{pad(i + 1)}</span>
-      <span className={styles.name}>{p.title}</span>
-      <span className={styles.type}>{p.type}</span>
-      <span className={styles.role}>{p.role}</span>
-      <span className={styles.year}>{p.year}</span>
-    </>
-  );
-
   return (
     <section id="projects" ref={sectionRef} className={styles.projects} aria-labelledby="projects-title">
       {/* menggelapkan About saat Projects naik menutupinya */}
@@ -162,119 +77,54 @@ const Projects = () => {
               ({pad(PROJECTS.length)})
             </sup>
           </h2>
-
-          <div className={styles.toggle} role="group" aria-label="Project layout">
-            {['list', 'grid'].map((v) => (
-              <button
-                key={v}
-                type="button"
-                className={styles.toggleBtn}
-                aria-pressed={view === v}
-                onClick={() => {
-                  setView(v);
-                  clear();
-                }}
-              >
-                {v}
-              </button>
-            ))}
-          </div>
         </div>
 
-        <div className={styles.tableHead} data-view={view} aria-hidden="true">
+        <div className={styles.tableHead} aria-hidden="true">
           <span>#</span>
           <span>Project</span>
           <span>Type</span>
           <span>Role</span>
           <span>Year</span>
+          <span />
         </div>
 
-        <ol
-          ref={listRef}
-          className={styles.list}
-          data-view={view}
-          data-in={revealed}
-          data-has-active={hasActive}
-          onPointerMove={onPointerMove}
-          onPointerLeave={clear}
-        >
-          {PROJECTS.map((p, i) => {
-            const common = {
-              className: styles.row,
-              'data-active': active === p.id,
-              onPointerEnter: (e) => onRowEnter(e, p.id),
-              onFocus: (e) => onRowFocus(e, p.id),
-              onBlur: clear,
-            };
+        <ol className={styles.list} data-in={revealed}>
+          {PROJECTS.map((p, i) => (
+            <li key={p.id} className={styles.item} style={{ '--i': i }}>
+              <div className={styles.row}>
+                <span className={styles.num}>{pad(i + 1)}</span>
+                <span className={styles.name}>{p.title}</span>
+                <span className={styles.type}>{p.type}</span>
+                <span className={styles.role}>{p.role}</span>
+                <span className={styles.year}>{p.year}</span>
 
-            return (
-              <li key={p.id} className={styles.item} style={{ '--i': i }}>
                 {p.href ? (
-                  <a href={p.href} {...common}>
-                    {isGrid && <Thumb project={p} />}
-                    {renderCells(p, i)}
+                  <a
+                    className={styles.btn}
+                    href={p.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`See my project: ${p.title}`}
+                  >
+                    See My Project
+                    <span className={styles.btnArrow} aria-hidden="true">→</span>
                   </a>
                 ) : (
-                  <div
-                    {...common}
-                    tabIndex={0}
-                    aria-label={`${p.title}, ${p.type}, ${p.role}, ${p.year}. Detail belum tersedia.`}
-                    data-unavailable="true"
+                  <span
+                    className={styles.btn}
+                    data-disabled="true"
+                    aria-disabled="true"
+                    title="Detail belum tersedia"
                   >
-                    {isGrid && <Thumb project={p} />}
-                    {renderCells(p, i)}
-                  </div>
+                    See My Project
+                  </span>
                 )}
-              </li>
-            );
-          })}
+              </div>
+            </li>
+          ))}
         </ol>
       </div>
-
-      {/* preview yang mengikuti kursor (hanya tampil untuk pointer halus) */}
-      <div
-        ref={floaterRef}
-        className={styles.floater}
-        data-visible={hasActive}
-        data-side="right"
-        aria-hidden="true"
-      >
-        <span className={styles.viewDot} aria-hidden="true" />
-        <div ref={cardRef} className={styles.previewCard}>
-          {PROJECTS.map((p, i) => (
-            <div key={p.id} className={styles.previewLayer} data-on={active === p.id}>
-              <Thumb project={p} index={i} eager />
-            </div>
-          ))}
-        </div>
-      </div>
     </section>
-  );
-};
-
-/* gambar preview, atau tile placeholder bila belum ada gambar */
-const Thumb = ({ project, index, eager = false }) => {
-  if (project.image) {
-    return (
-      <span className={styles.thumb}>
-        <img
-          src={project.image}
-          alt={project.alt}
-          loading={eager ? 'eager' : 'lazy'}
-          decoding="async"
-          className={styles.thumbImg}
-        />
-      </span>
-    );
-  }
-  return (
-    <span className={`${styles.thumb} ${styles.placeholder}`} aria-hidden="true">
-      <span className={styles.placeholderText}>
-        Preview
-        <small>belum tersedia</small>
-      </span>
-      {index !== undefined && <span className={styles.placeholderNum}>{pad(index + 1)}</span>}
-    </span>
   );
 };
 

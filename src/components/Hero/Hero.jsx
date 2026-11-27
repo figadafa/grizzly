@@ -6,8 +6,8 @@ import headlineSplatter from '../../assets/images/Asset6.png';
 // Isi url yang masih kosong. Chip tanpa url tampil, tapi belum bisa diklik.
 const SOCIALS = [
   { label: 'GitHub', url: 'https://github.com/figadafa' },
-  { label: 'LinkedIn', url: '' },
-  { label: 'Instagram', url: '' },
+  { label: 'LinkedIn', url: 'https://www.linkedin.com/in/figabrilliantdaffa/' },
+  { label: 'Instagram', url: 'https://www.instagram.com/figadaffa/' },
 ];
 
 const Hero = () => {
