@@ -2,40 +2,43 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './About.module.css';
 
 /*
-  Foto: public/images/About/about-1.jpg, about-2.jpg, about-3.jpg
-  Path diawali /images/ karena Vite menyajikan folder public dari root.
+  Foto: taruh di public/images/about/ (about-1.jpg, about-2.jpg, about-3.jpg).
+  Teks, alt, dan catatan foto di bawah ini boleh kamu ganti sesukamu.
 */
 const STEPS = [
   {
     id: 'began',
-    kicker: 'WHERE IT ALL STARTED',
-    title: 'BEFORE CODE, THERE WAS GRAFFITI.',
+    kicker: 'Where it began',
+    title: 'A different kind of curiosity',
     body:
-      "My interest in creativity started with street art, especially graffiti. I was drawn to its freedom, colors, and raw expression. At one point, I even considered pursuing Visual Communication Design.",
-    image: '/images/About/about-1.jpg',
-    alt: 'Figa at a university event',
+      "My journey didn't start with code. I was once more drawn to creativity, design, and the process of turning ideas into something tangible. Choosing Informatics at Universitas Muhammadiyah Malang opened a new path\u2014one that challenged me to think differently and explore beyond what I already knew.",
+    image: 'public/images/about/about-1.jpg',
+    alt: 'Figa Daffa at a university event',
+    note: 'Every journey starts somewhere.',
     tilt: '-2deg',
-    position: '8% 25%%',
+    position: '50% 22%',
   },
   {
     id: 'making',
-    kicker: 'A DIFFERENT DIRECTION',
-    title: 'FROM STREET ART TO SOFTWARE.',
+    kicker: 'In the making',
+    title: 'Learning through people and experience',
     body:
-      "Life took me somewhere different. I ended up studying Informatics, where I discovered another way to express ideas: through technology, experimentation, and building things.",
-    image: '/images/About/about-2.jpg',
-    alt: 'Figa at a student organization event',
+      "I learn best by exploring, questioning, and exchanging ideas. Through academic projects, organizational experiences, and many discussions, I've learned that growth doesn't happen all at once. It comes from trying, making mistakes, listening to different perspectives, and figuring things out along the way.",
+    image: 'public/images/about/about-2.jpg',
+    alt: 'Figa Daffa listening during a discussion',
+    note: 'Different places, same curiosity.',
     tilt: '1.6deg',
     position: '50% 30%',
   },
   {
     id: 'next',
-    kicker: "WHAT'S NEXT",
-    title: 'STILL EXPERIMENTING. STILL BUILDING.',
+    kicker: "What's next",
+    title: 'Still curious. Still building.',
     body:
-      "I enjoy exploring different interests, meeting different people, and taking on challenges beyond the usual path. I don't have to fit into just one box.",
-    image: '/images/About/about-3.jpg',
+      "I'm exploring the intersection of technology, data, and artificial intelligence, looking for opportunities to build things that are not only functional but genuinely useful. There's still a lot I want to understand, create, and achieve, but I know the direction\u2014keep challenging myself, expand my perspective, and turn what I learn into something that matters.",
+    image: 'public/images/about/about-3.jpg',
     alt: 'Code open on a laptop screen',
+    note: 'Same curiosity, different chapters.',
     tilt: '-1.2deg',
     position: '50% 50%',
   },
@@ -122,68 +125,57 @@ const About = () => {
         </div>
 
         <div className={styles.inner}>
-          {/* ===== KIRI: collage foto ===== */}
+          {/* ===== KIRI: foto yang mengikuti langkah di kanan ===== */}
           <div className={styles.visual}>
             <p className={styles.tag}>
               Grizzly <span>The balanced professional</span>
             </p>
 
             <div className={styles.stack}>
-              {/* lapisan dekorasi di belakang foto */}
-              <span className={styles.blob} aria-hidden="true" />
-              <span className={styles.paper} aria-hidden="true" />
-              <span className={styles.backCard} aria-hidden="true" />
-              <span className={`${styles.dots} ${styles.dotsTop}`} aria-hidden="true" />
-              <span className={`${styles.dots} ${styles.dotsBottom}`} aria-hidden="true" />
               {STEPS.map((step, i) => (
                 <figure
                   key={step.id}
                   className={styles.card}
                   data-state={i === active ? 'active' : i < active ? 'past' : 'next'}
-                  aria-hidden={i !== active}
                   style={{ '--tilt': step.tilt }}
                 >
-                  <div className={styles.frame}>
-                    <img
-                      src={step.image}
-                      alt={step.alt}
-                      className={styles.photo}
-                      style={{ objectPosition: step.position }}
-                      loading="lazy"
-                    />
-                  </div>
-                  <figcaption className={styles.bar}>
-                    <b>Figa Daffa</b>
-                    <span>Informatics Student</span>
-                  </figcaption>
+                  <img
+                    src={step.image}
+                    alt={step.alt}
+                    className={styles.photo}
+                    style={{ objectPosition: step.position }}
+                    loading="lazy"
+                  />
+                  <figcaption className={styles.note}>{step.note}</figcaption>
                 </figure>
               ))}
 
-              <span className={`${styles.tape} ${styles.tapeTR}`} aria-hidden="true" />
-              <span className={`${styles.tape} ${styles.tapeBL}`} aria-hidden="true" />
-              <span className={`${styles.tape} ${styles.tapeMid}`} aria-hidden="true" />
-
-              {/* FIGA signature: tanda tangan pemilik foto, dekoratif */}
-              <span className={styles.signature} aria-hidden="true">FIGA</span>
-
-              <svg className={styles.swoosh} viewBox="0 0 200 150" aria-hidden="true">
-                <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M14 128 C 64 112, 118 62, 166 14" strokeWidth="20" />
-                  <path d="M34 140 C 84 124, 138 82, 186 44" strokeWidth="11" />
-                  <path d="M126 70 C 146 92, 150 112, 144 138" strokeWidth="12" />
+              <span className={`${styles.tape} ${styles.tapeLeft}`} aria-hidden="true" />
+              <span className={`${styles.tape} ${styles.tapeRight}`} aria-hidden="true" />
+              <svg className={styles.marker} viewBox="0 0 160 120" aria-hidden="true">
+                <g fill="none" stroke="currentColor" strokeLinecap="round">
+                  <path d="M18 104 L92 20" strokeWidth="16" />
+                  <path d="M54 112 L130 30" strokeWidth="10" />
+                  <path d="M100 108 L148 56" strokeWidth="7" />
                 </g>
               </svg>
             </div>
+
+            <p className={styles.caption}>
+              Figa Daffa <span>Informatics Student</span>
+            </p>
           </div>
 
           {/* ===== KANAN: judul + langkah 01 / 02 / 03 ===== */}
           <div className={styles.content}>
-           <h2 id="about-title" className={styles.title}>
-             <span>More Than</span>
-             <span className={styles.accent}>Just Code.</span>
-          </h2>
+            <h2 id="about-title" className={styles.title}>
+              <span>About</span>
+              <span className={styles.accent}>Me</span>
+            </h2>
+
             <p className={styles.intro}>
-              A little art. <strong>A little chaos.</strong> A lot of curiosity.
+              A journey shaped by <strong>curiosity, discussions,</strong> and a <strong>constant</strong> desire to
+              learn. Here&rsquo;s a story of how I got here and where I&rsquo;m headed next.
             </p>
 
             <ol className={styles.steps}>
@@ -191,7 +183,6 @@ const About = () => {
                 <li
                   key={step.id}
                   className={styles.step}
-                  style={{ '--i': i }}
                   data-active={i === active}
                   data-done={i < active}
                   aria-current={i === active ? 'step' : undefined}

@@ -1,5 +1,5 @@
 /* ==========================================================
-   ABOUT: pinned scroll story, street-art editorial collage.
+   ABOUT: pinned scroll story.
    --enter  (0 -> 1): section masuk dari bawah layar (transisi dari hero)
    Keduanya diisi oleh About.jsx; langkah aktif (01/02/03) lewat state.
    ========================================================== */
@@ -7,17 +7,19 @@
 .about {
   --steps: 3;
   --enter: 0;
-  --offset: var(--header-height, 88px);
+  --offset: var(--header-height, 88px); /* tinggi header fixed; sesuaikan kalau perlu */
   --numcol: 4.2rem;
 
   position: relative;
-  z-index: 7;
+  z-index: 7; /* di atas elemen hero (z-index tertinggi di hero = 6) */
+  /* tinggi stage + jarak scroll untuk 3 langkah */
   height: calc(100svh - var(--offset) + var(--steps) * 75svh);
   color: var(--concrete-cream);
 }
 
 /* ---------- transisi dari hero ---------- */
 
+/* hero menggelap saat About naik menutupinya */
 .dim {
   position: absolute;
   left: 0;
@@ -38,7 +40,7 @@
   align-items: center;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 55% 60% at 24% 52%, rgba(243, 107, 53, 0.12), transparent 70%),
+    radial-gradient(ellipse 55% 60% at 24% 52%, rgba(243, 107, 53, 0.1), transparent 70%),
     var(--asphalt-black);
   clip-path: polygon(
     0 0,
@@ -46,18 +48,6 @@
     calc(var(--enter) * 150% - 30%) 100%,
     0 100%
   );
-}
-
-/* tekstur grain halus di seluruh section, seperti kertas cetak */
-.stage::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.07;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 
 /* pita oranye tepat di tepi sapuan */
@@ -81,7 +71,6 @@
 
 .meta {
   position: absolute;
-  z-index: 2;
   top: clamp(0.7rem, 2.6svh, 1.6rem);
   left: 0;
   right: 0;
@@ -115,8 +104,6 @@
 /* ---------- layout ---------- */
 
 .inner {
-  position: relative;
-  z-index: 1;
   width: 100%;
   height: 100%;
   max-width: 1400px;
@@ -129,7 +116,7 @@
   align-items: center;
 }
 
-/* ---------- kiri: collage ---------- */
+/* ---------- kiri: foto ---------- */
 
 .visual {
   position: relative;
@@ -139,6 +126,7 @@
   justify-content: center;
   gap: clamp(0.7rem, 2svh, 1.2rem);
   min-width: 0;
+  /* mendarat pelan-pelan saat section masuk */
   transform: translateY(calc((1 - var(--enter)) * 70px));
 }
 
@@ -167,115 +155,24 @@
   max-width: 100%;
 }
 
-
-
-/* secarik kertas kraft di kiri, tepinya robek */
-.paper {
+/* bingkai tipis di belakang foto untuk kedalaman */
+.stack::before {
+  content: '';
   position: absolute;
-  z-index: 1;
-  top: 5%;
-  left: -9%;
-  width: 22%;
-  height: 42%;
-  background: linear-gradient(180deg, #a89f8d, #8f8676);
-  transform: rotate(-2.5deg);
-  opacity: 0.92;
-  clip-path: polygon(
-    0% 4%, 12% 0%, 28% 3%, 45% 0%, 63% 4%, 80% 0%, 100% 3%,
-    97% 22%, 100% 40%, 96% 61%, 100% 82%, 97% 100%,
-    78% 96%, 60% 100%, 42% 96%, 25% 100%, 8% 96%, 3% 100%,
-    0% 80%, 4% 60%, 0% 40%, 3% 20%
-  );
-  pointer-events: none;
-}
-
-/* kartu gelap bergaris oranye yang menyembul di atas dan kanan */
-.backCard {
-  position: absolute;
-  z-index: 1;
-  inset: -3% -6% 3% 5%;
-  background: #1b1b1b;
-  border: 1px solid rgba(243, 107, 53, 0.85);
+  inset: 14px -14px -14px 14px;
+  border: 1px solid rgba(240, 235, 226, 0.2);
   transform: rotate(2.4deg);
-  pointer-events: none;
 }
-
-.backCard::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  right: 9%;
-  width: 24%;
-  height: 10px;
-  background: var(--hazard-orange);
-}
-
-/* semprotan cat tipis di pojok bawah-kiri kartu belakang */
-.backCard::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 38%;
-  height: 34%;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 12% 88%, rgba(243, 107, 53, 0.35) 0 3px, transparent 4px),
-    radial-gradient(circle at 22% 80%, rgba(243, 107, 53, 0.22) 0 2px, transparent 3px),
-    radial-gradient(circle at 6% 72%, rgba(243, 107, 53, 0.18) 0 1.5px, transparent 2.5px),
-    radial-gradient(ellipse 60% 50% at 18% 90%, rgba(243, 107, 53, 0.1), transparent 70%);
-}
-
-/* pola titik halftone */
-.dots {
-  position: absolute;
-  z-index: 1;
-  background-image: radial-gradient(circle, rgba(243, 107, 53, 0.9) 1.5px, transparent 2px);
-  background-size: 12px 12px;
-  pointer-events: none;
-}
-
-.dotsTop {
-  top: -10%;
-  right: -2%;
-  width: 22%;
-  height: 11%;
-  opacity: 0.75;
-}
-
-.dotsBottom {
-  bottom: -9%;
-  left: 12%;
-  width: 30%;
-  height: 7%;
-  opacity: 0.6;
-}
-
-
-@keyframes peekIn {
-  from {
-    opacity: 0;
-    transform: rotate(12deg) translate(14px, 14px);
-  }
-  to {
-    opacity: 1;
-    transform: rotate(7deg);
-  }
-}
-
-/* --- kartu foto --- */
 
 .card {
   position: absolute;
-  z-index: 3;
   inset: 0;
   margin: 0;
+  padding: 10px 10px 0;
   display: flex;
   flex-direction: column;
-  background: #151515;
-  box-shadow:
-    0 28px 60px rgba(0, 0, 0, 0.55),
-    0 0 0 1px rgba(243, 107, 53, 0.6);
+  background: var(--concrete-cream);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.55);
   transition:
     transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1),
     opacity 0.55s ease;
@@ -283,165 +180,93 @@
 
 .card[data-state='active'] {
   opacity: 1;
-  z-index: 4;
+  z-index: 3;
   transform: translate(0, 0) rotate(var(--tilt)) scale(1);
 }
 
 .card[data-state='past'] {
   opacity: 0;
-  z-index: 3;
+  z-index: 2;
   transform: translate(-16%, -7%) rotate(calc(var(--tilt) - 9deg)) scale(0.94);
 }
 
 .card[data-state='next'] {
   opacity: 0;
-  z-index: 3;
+  z-index: 1;
   transform: translate(12%, 12%) rotate(calc(var(--tilt) + 8deg)) scale(0.96);
 }
 
-.frame {
-  position: relative;
+.photo {
   flex: 1;
   min-height: 0;
-  margin: 9px 9px 0;
-  overflow: hidden;
-  background: #262626;
-}
-
-/* tekstur fotokopi tipis di atas gambar */
-.frame::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.16;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-}
-
-/* gradasi tipis di atas foto */
-.frame::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 40%);
-  pointer-events: none;
-}
-
-.photo {
-  position: absolute;
-  inset: 0;
   width: 100%;
-  height: 100%;
   display: block;
   object-fit: cover;
+  background: #2a2a2a;
 }
 
-/* strip nama di bawah foto */
-.bar {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  padding: 0.85rem 1rem 0.95rem;
+.note {
+  padding: 0.7rem 0.2rem 0.85rem;
   font-family: var(--font-body);
-  text-transform: uppercase;
+  font-size: 0.82rem;
+  font-style: italic;
+  color: #1c1c1c;
+  letter-spacing: 0.01em;
 }
-
-.bar b {
-  font-size: 0.66rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  color: var(--concrete-cream);
-}
-
-.bar span {
-  font-size: 0.6rem;
-  letter-spacing: 0.18em;
-  color: var(--steel-gray);
-}
-
-/* --- FIGA signature: pojok kiri atas foto --- */
-
-.signature {
-  position: absolute;
-  z-index: 6;
-  top: 3%;
-  left: 3%;
-  font-family: var(--font-display-urban);
-  font-size: clamp(2.2rem, 7svh, 3.8rem);
-  line-height: 1;
-  letter-spacing: 0.02em;
-  color: var(--hazard-orange);
-  transform: rotate(-7deg);
-  transform-origin: left top;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.55), 0 0 14px rgba(243, 107, 53, 0.25);
-  pointer-events: none;
-  user-select: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .signature {
-    animation: signatureIn 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s both;
-  }
-}
-
-@keyframes signatureIn {
-  from {
-    opacity: 0;
-    transform: rotate(-7deg) translate(-8px, 6px) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: rotate(-7deg);
-  }
-}
-
-/* --- selotip dan coretan cat --- */
 
 .tape {
   position: absolute;
   z-index: 5;
-  background: rgba(12, 12, 12, 0.92);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  width: 24%;
+  height: 7%;
+  background: rgba(14, 14, 14, 0.9);
   pointer-events: none;
 }
 
-.tapeTR {
-  top: 6%;
-  right: 3%;
-  width: 22%;
-  height: 6.5%;
-  transform: rotate(38deg);
+.tapeLeft {
+  top: 3%;
+  left: -6%;
+  transform: rotate(-38deg);
 }
 
-.tapeBL {
-  bottom: 21%;
-  left: -5%;
-  width: 22%;
-  height: 6%;
-  transform: rotate(-42deg);
+.tapeRight {
+  top: 2%;
+  right: -7%;
+  transform: rotate(34deg);
 }
 
-/* selotip ketiga menempel di sudut kanan atas polaroid */
-.tapeMid {
-  top: 58%;
-  right: -4%;
-  width: 16%;
-  height: 5%;
-  transform: rotate(-30deg);
-  background: rgba(240, 235, 226, 0.7);
-}
-
-.swoosh {
+.marker {
   position: absolute;
   z-index: 6;
-  right: -14%;
-  bottom: -4%;
-  width: 48%;
+  right: -9%;
+  bottom: 2%;
+  width: 36%;
   color: var(--hazard-orange);
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
   pointer-events: none;
+}
+
+.caption {
+  align-self: flex-start;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--concrete-cream);
+}
+
+.caption::before {
+  content: '';
+  width: 1.4rem;
+  height: 2px;
+  background: var(--hazard-orange);
+}
+
+.caption span {
+  color: var(--steel-gray);
 }
 
 /* ---------- kanan: konten ---------- */
@@ -454,9 +279,8 @@
 
 .title {
   display: flex;
-  flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.1em 0.28em;
+  gap: 0.28em;
   margin: 0 0 clamp(0.6rem, 1.8svh, 1.1rem);
   font-family: var(--font-display-gagalin);
   font-size: clamp(2.6rem, min(6.4vw, 11svh), 6rem);
@@ -466,39 +290,24 @@
   color: var(--concrete-cream);
 }
 
-.accentWrap {
-  position: relative;
-  display: inline-block;
-}
-
 .accent {
   position: relative;
   display: inline-block;
-  font-family: var(--font-display-urban);
-  font-size: 1.15em;
-  line-height: 1;
   color: var(--hazard-orange);
-  transform: rotate(-3deg) translateX(calc((1 - var(--enter)) * 140px));
+  transform: skewX(-9deg) rotate(-3deg) translateX(calc((1 - var(--enter)) * 140px));
 }
 
-/* coretan marker di bawah "JUST CODE." */
-.marker {
+/* coretan marker di bawah "ME" */
+.accent::after {
+  content: '';
   position: absolute;
-  left: 0;
+  left: -4%;
+  right: -6%;
   bottom: -0.12em;
-  width: 100%;
-  height: 0.34em;
-  overflow: visible;
-  pointer-events: none;
-}
-
-.marker path {
-  fill: none;
-  stroke: var(--hazard-orange);
-  stroke-width: 6;
-  stroke-linecap: round;
-  stroke-dasharray: 320;
-  stroke-dashoffset: calc((1 - var(--enter)) * 320);
+  height: 0.16em;
+  background: var(--hazard-orange);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 10'%3E%3Cpath d='M2 6 Q12 0 22 6 T42 6 T62 6 T82 6 T102 6 T122 6 T142 6 T158 5' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 10'%3E%3Cpath d='M2 6 Q12 0 22 6 T42 6 T62 6 T82 6 T102 6 T122 6 T142 6 T158 5' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
 }
 
 .intro {
@@ -527,7 +336,6 @@
   position: relative;
   padding: 0 0 clamp(0.8rem, 2.4svh, 1.5rem) 2rem;
   opacity: 0.5;
-  transform: translateY(calc((1 - var(--enter)) * (var(--i, 0) * 14px + 12px)));
   transition: opacity 0.4s ease;
 }
 
@@ -686,7 +494,6 @@
 
 .hint {
   position: absolute;
-  z-index: 2;
   right: var(--spacing-lg);
   bottom: clamp(0.8rem, 2.6svh, 1.6rem);
   display: flex;
@@ -734,15 +541,6 @@
   .bodyWrap {
     transition: none;
   }
-  .marker path {
-    stroke-dashoffset: 0;
-  }
-}
-
-@media (max-height: 800px) {
-  .tag {
-    display: none;
-  }
 }
 
 /* ---------- layar kecil ---------- */
@@ -771,33 +569,14 @@
   }
 
   .tag,
+  .caption,
   .intro,
-  .bar,
-  .paper,
-  .dots,
-  .tapeMid {
+  .note {
     display: none;
-  }
-
-  .blob {
-    width: 58%;
-    height: 50%;
-    top: -6%;
-    left: -6%;
-  }
-
-  .frame {
-    margin-bottom: 9px;
   }
 
   .stack {
     height: min(22svh, 200px);
-  }
-
-  .signature {
-    font-size: clamp(1.4rem, 6svh, 2.2rem);
-    top: 12%;
-    left: 6%;
   }
 
   .title {
