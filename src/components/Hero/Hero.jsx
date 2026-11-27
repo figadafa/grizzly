@@ -3,6 +3,13 @@ import styles from './Hero.module.css';
 import Button from '../Button/Button';
 import headlineSplatter from '../../assets/images/Asset6.png';
 
+// Isi url yang masih kosong. Chip tanpa url tampil, tapi belum bisa diklik.
+const SOCIALS = [
+  { label: 'GitHub', url: 'https://github.com/figadafa' },
+  { label: 'LinkedIn', url: '' },
+  { label: 'Instagram', url: '' },
+];
+
 const Hero = () => {
   return (
     <section className={styles.hero}>
@@ -10,11 +17,6 @@ const Hero = () => {
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.textColumn}>
-            <div className={styles.metaInfo}>
-              <span className={styles.roleLabel}>INFORMATICS STUDENT</span>
-              <span className={styles.roleLabelSecondary}>DATA & CREATIVE DEVELOPER</span>
-            </div>
-            
             <h2 data-zoom-target className={styles.headline}>
               <span className={styles.builtThrough}>
                 BUILT THROUGH
@@ -35,11 +37,19 @@ const Hero = () => {
               <Button href="#about">ABOUT ME</Button>
             </div>
 
-            <div className={styles.socialLinks}>
-              <span>GITHUB</span>
-              <span>LINKEDIN</span>
-              <span>INSTAGRAM</span>
-            </div>
+            <ul className={styles.socialLinks} aria-label="Social media">
+              {SOCIALS.map(({ label, url }) => (
+                <li key={label}>
+                  {url ? (
+                    <a href={url} target="_blank" rel="noreferrer" className={styles.socialChip}>
+                      {label} <span aria-hidden="true">&#8599;</span>
+                    </a>
+                  ) : (
+                    <span className={styles.socialChip}>{label}</span>
+                  )}
+                </li>
+              ))}
+            </ul>
           </div>
 
           <div className={styles.portraitColumn}>
